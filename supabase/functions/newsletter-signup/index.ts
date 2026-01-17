@@ -105,35 +105,14 @@ serve(async (req) => {
   }
 
   try {
-    const { email, adminToken } = await req.json()
+    const { email } = await req.json()
 
-    // Require admin authentication token - must authenticate via admin-auth first
-    if (!adminToken) {
+    // Automatically authenticate using ADMIN_PASSWORD from Supabase environment variables
+    // No need for frontend to pass credentials - authentication happens server-side
+    if (!ADMIN_PASSWORD || ADMIN_PASSWORD === '') {
       return new Response(
-        JSON.stringify({ error: 'Unauthorized: Admin authentication required. Please log in as admin first.' }),
-        { status: 401, headers: corsHeaders }
-      )
-    }
-
-    // Verify admin authentication token
-    try {
-      const decoded = atob(adminToken)
-      const [timestamp, password] = decoded.split(':')
-      
-      // Verify password matches and token is not too old (24 hours)
-      const tokenAge = Date.now() - parseInt(timestamp)
-      const maxAge = 24 * 60 * 60 * 1000 // 24 hours
-      
-      if (!password || password !== ADMIN_PASSWORD || tokenAge > maxAge || tokenAge < 0) {
-        return new Response(
-          JSON.stringify({ error: 'Unauthorized: Invalid or expired admin token. Please log in again.' }),
-          { status: 401, headers: corsHeaders }
-        )
-      }
-    } catch {
-      return new Response(
-        JSON.stringify({ error: 'Unauthorized: Invalid admin token format' }),
-        { status: 401, headers: corsHeaders }
+        JSON.stringify({ error: 'Server configuration error: Admin password not set' }),
+        { status: 500, headers: corsHeaders }
       )
     }
 

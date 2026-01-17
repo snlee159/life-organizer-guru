@@ -26,23 +26,11 @@ export default function NewsletterSignup() {
     }
 
     try {
-      // Get admin token - required for newsletter signup
-      const adminToken = localStorage.getItem('admin_token')
-      
-      if (!adminToken) {
-        setMessage('Admin authentication required. Please log in as admin first.')
-        setStatus('error')
-        trackNewsletterSignup(false)
-        trackFormSubmit('newsletter', false)
-        return
-      }
-      
       // Use edge function for CORS protection and security
-      // Requires admin authentication token to write to database
+      // Admin authentication happens automatically in the edge function using ADMIN_PASSWORD
       const { data, error } = await supabase.functions.invoke('newsletter-signup', {
         body: { 
-          email,
-          adminToken
+          email
         },
       })
 
