@@ -37,16 +37,40 @@ npm install
 
 ### 3. Configure Environment Variables
 
-Create a `.env` file in the root directory:
+Create a `.env` file in the root directory (copy from `env.template`):
 
 ```env
 VITE_SUPABASE_URL=your_supabase_project_url
 VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
-VITE_ADMIN_PASSWORD=your_secure_admin_password_here
 BASE_URL=https://yourdomain.com
 ```
 
-### 4. Set Up Email Sending (Resend)
+**Note:** Admin password is NOT set here! It's stored securely in Supabase Edge Functions (see step 4).
+
+### 4. Set Up Supabase Edge Functions
+
+#### 4a. Newsletter Signup Function
+
+1. In Supabase Dashboard, go to Edge Functions
+2. Create a new function called `newsletter-signup`
+3. Copy the code from `supabase/functions/newsletter-signup/index.ts`
+4. Go to Settings > Secrets and add:
+   - `SUPABASE_URL` - Your Supabase project URL
+   - `SUPABASE_SERVICE_ROLE_KEY` - Your Supabase service role key (from Settings > API)
+   - `ALLOWED_ORIGINS` (optional) - Comma-separated list of allowed origins (e.g., `https://yourdomain.com,https://www.yourdomain.com`)
+     - If not set, all origins are allowed (for development)
+     - Set this in production to block localhost and restrict to your domain
+
+#### 4b. Admin Authentication Function
+
+1. In Supabase Dashboard, go to Edge Functions
+2. Create a new function called `admin-auth`
+3. Copy the code from `supabase/functions/admin-auth/index.ts`
+4. Go to Settings > Secrets and add:
+   - `ADMIN_PASSWORD` - Your secure admin password (this is never exposed in frontend code)
+   - `ALLOWED_ORIGINS` (optional) - Same as newsletter-signup above
+
+#### 4c. Newsletter Sending Function
 
 1. Sign up at [resend.com](https://resend.com)
 2. Get your API key
@@ -54,7 +78,7 @@ BASE_URL=https://yourdomain.com
    - Go to Edge Functions
    - Create a new function called `send-newsletter`
    - Copy the code from `supabase/functions/send-newsletter/index.ts`
-   - Set environment variables:
+   - Go to Settings > Secrets and add:
      - `RESEND_API_KEY` - Your Resend API key
      - `SUPABASE_URL` - Your Supabase project URL
      - `SUPABASE_SERVICE_ROLE_KEY` - Your Supabase service role key (from Settings > API)
@@ -90,7 +114,8 @@ The built files will be in the `dist` directory.
 ## Admin Access
 
 - Navigate to `/admin` to access the admin dashboard
-- Use the password set in `VITE_ADMIN_PASSWORD` environment variable
+- Use the password set in Supabase Edge Function secrets (`ADMIN_PASSWORD`)
+- **Security:** The admin password is stored securely in Supabase Edge Functions and never exposed in frontend code
 - From the admin dashboard, you can:
   - View all newsletter subscribers
   - Draft and send newsletters to all subscribers
@@ -111,11 +136,19 @@ src/
   lib/           # Utilities (Supabase client)
 ```
 
+## Security
+
+- **Admin Password**: Stored securely in Supabase Edge Functions, never exposed in frontend code
+- **Supabase Anon Key**: Safe to expose - protected by Row Level Security (RLS) policies
+- **Environment Variables**: Only public variables (VITE_*) go in `.env`. Secrets go in Supabase Edge Function settings
+- See `SECURITY.md` for detailed security documentation
+
 ## Notes
 
-- The admin authentication is currently password-based. For production, consider implementing proper authentication with Supabase Auth.
-- Email sending requires a Resend API key. You can also use other email services by modifying the Edge Function.
-- Make sure to update all placeholder URLs and email addresses before deploying.
+- Admin authentication uses Supabase Edge Functions for secure password validation
+- Email sending requires a Resend API key. You can also use other email services by modifying the Edge Function
+- Make sure to update all placeholder URLs and email addresses before deploying
+- Never commit `.env` files to version control (already in `.gitignore`)
 
 ## License
 

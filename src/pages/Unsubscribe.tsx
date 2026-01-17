@@ -20,7 +20,6 @@ export default function Unsubscribe() {
       if (!isSupabaseConfigured()) {
         setStatus('success')
         setMessage('You have been successfully unsubscribed from our newsletter.')
-        console.log('Unsubscribe (Supabase not configured):', email)
         return
       }
 
@@ -37,7 +36,6 @@ export default function Unsubscribe() {
         setStatus('success')
         setMessage('You have been successfully unsubscribed from our newsletter.')
       } catch (error) {
-        console.error('Unsubscribe error:', error)
         setStatus('error')
         setMessage('An error occurred. Please contact us directly.')
       }

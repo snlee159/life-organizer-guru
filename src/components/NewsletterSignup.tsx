@@ -21,38 +21,77 @@ export default function NewsletterSignup() {
         setEmail('')
         trackNewsletterSignup(true)
         trackFormSubmit('newsletter', true)
-        console.log('Newsletter signup (Supabase not configured):', email)
       }, 500)
       return
     }
 
     try {
-      const { error } = await supabase
-        .from('newsletter_subscribers')
-        .insert([{ email, subscribed: true }])
+      // Get admin token if available (for admin-authenticated signups)
+      const adminToken = localStorage.getItem('admin_token')
+      
+      // Use edge function for CORS protection and security
+      // Requires admin authentication token to write to database
+      const { data, error } = await supabase.functions.invoke('newsletter-signup', {
+        body: { 
+          email,
+          adminToken: adminToken || null
+        },
+      })
 
       if (error) {
-        if (error.code === '23505') {
+        throw error
+      }
+
+      if (data?.error) {
+        // Handle specific error cases
+        if (data.alreadySubscribed) {
           setMessage('You are already subscribed!')
           setStatus('error')
           trackNewsletterSignup(false)
           trackFormSubmit('newsletter', false)
+        } else if (data.error.includes('Unauthorized') || data.error.includes('admin')) {
+          setMessage('Admin authentication required. Please log in as admin first.')
+          setStatus('error')
+          trackNewsletterSignup(false)
+          trackFormSubmit('newsletter', false)
+        } else if (data.error.includes('Forbidden') || data.error.includes('Origin not allowed')) {
+          setMessage('Access denied. Please use the production website.')
+          setStatus('error')
+          trackNewsletterSignup(false)
+          trackFormSubmit('newsletter', false)
         } else {
-          throw error
+          throw new Error(data.error)
         }
-      } else {
-        setMessage('Thank you for subscribing! Check your email for your free product.')
+        return
+      }
+
+      if (data?.success) {
+        // Successfully subscribed
+        if (data.resubscribed) {
+          setMessage('Welcome back! You have been resubscribed. Check your email for your free product.')
+        } else {
+          setMessage('Thank you for subscribing! Check your email for your free product.')
+        }
         setStatus('success')
         setEmail('')
         trackNewsletterSignup(true)
         trackFormSubmit('newsletter', true)
+      } else {
+        throw new Error('Unexpected response from server')
       }
-    } catch (error) {
-      setMessage('Something went wrong. Please try again.')
+    } catch (error: any) {
+      let errorMessage = 'Something went wrong. Please try again.'
+      
+      if (error?.message?.includes('Forbidden') || error?.message?.includes('Origin not allowed')) {
+        errorMessage = 'Access denied. Please use the production website.'
+      } else if (error?.message) {
+        errorMessage = `Error: ${error.message}`
+      }
+      
+      setMessage(errorMessage)
       setStatus('error')
       trackNewsletterSignup(false)
       trackFormSubmit('newsletter', false)
-      console.error('Newsletter signup error:', error)
     }
   }
 

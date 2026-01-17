@@ -51,7 +51,6 @@ serve(async (req) => {
 
       if (!response.ok) {
         const error = await response.text()
-        console.error(`Failed to send email to ${email}:`, error)
         throw new Error(`Failed to send email to ${email}`)
       }
 
@@ -72,7 +71,6 @@ serve(async (req) => {
       { status: 200, headers: { 'Content-Type': 'application/json' } }
     )
   } catch (error) {
-    console.error('Error:', error)
     return new Response(
       JSON.stringify({ error: error.message }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }

@@ -21,7 +21,6 @@ export default function Admin() {
 
   const loadSubscribers = async () => {
     if (!isSupabaseConfigured()) {
-      console.warn('Supabase is not configured. Subscriber list will be empty.')
       setSubscribers([])
       return
     }
@@ -32,7 +31,6 @@ export default function Admin() {
       .eq('subscribed', true)
 
     if (error) {
-      console.error('Error loading subscribers:', error)
       setSubscribers([])
     } else {
       setSubscribers(data || [])
@@ -41,22 +39,45 @@ export default function Admin() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Simple password check - in production, use proper authentication
-    // For now, using a simple password stored in env
-    const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD || 'admin123'
     
-    if (password === adminPassword) {
-      setIsAuthenticated(true)
-      localStorage.setItem('admin_authenticated', 'true')
-      loadSubscribers()
-    } else {
-      alert('Invalid password')
+    if (!isSupabaseConfigured()) {
+      alert('Supabase is not configured. Admin login requires Supabase.')
+      return
+    }
+
+    try {
+      // Authenticate via Supabase Edge Function (password never exposed in frontend)
+      const { data, error } = await supabase.functions.invoke('admin-auth', {
+        body: { password },
+      })
+
+      if (error) {
+        throw error
+      }
+
+      if (data?.authenticated) {
+        setIsAuthenticated(true)
+        // Store authentication token for use with other functions
+        if (data.token) {
+          localStorage.setItem('admin_token', data.token)
+        }
+        localStorage.setItem('admin_authenticated', 'true')
+        setPassword('') // Clear password from memory
+        loadSubscribers()
+      } else {
+        alert('Invalid password')
+        setPassword('')
+      }
+    } catch (error: any) {
+      alert('Login failed. Please try again.')
+      setPassword('')
     }
   }
 
   const handleLogout = () => {
     setIsAuthenticated(false)
     localStorage.removeItem('admin_authenticated')
+    localStorage.removeItem('admin_token')
     setEmail('')
     setPassword('')
   }
@@ -99,8 +120,7 @@ export default function Admin() {
       setNewsletterSubject('')
       setNewsletterContent('')
     } catch (error: any) {
-      console.error('Error sending newsletter:', error)
-      alert(`Error sending newsletter: ${error?.message || 'Please check the console and ensure the Supabase Edge Function is set up.'}`)
+      alert(`Error sending newsletter: ${error?.message || 'Please ensure the Supabase Edge Function is set up.'}`)
     } finally {
       setSending(false)
     }
