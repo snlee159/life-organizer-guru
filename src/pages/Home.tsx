@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { BookOpen, Briefcase, Target } from 'lucide-react'
 import NewsletterSignup from '../components/NewsletterSignup'
+import { trackButtonClick } from '../lib/analytics'
 
 export default function Home() {
   return (
@@ -40,6 +41,7 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link
                 to="/products"
+                onClick={() => trackButtonClick('Explore Products', 'hero')}
                 className="group px-10 py-4 bg-white text-primary-900 font-medium rounded-sm hover:bg-primary-50 transition-all duration-300 shadow-luxury hover:shadow-xl tracking-wide"
               >
                 Explore Products
@@ -47,6 +49,7 @@ export default function Home() {
               </Link>
               <Link
                 to="/services"
+                onClick={() => trackButtonClick('Book Consultation', 'hero')}
                 className="px-10 py-4 bg-white/10 backdrop-blur-sm text-white font-medium rounded-sm border border-white/30 hover:bg-white/20 transition-all duration-300 tracking-wide"
               >
                 Book Consultation

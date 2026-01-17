@@ -1,6 +1,26 @@
+import { useState } from 'react'
 import NewsletterSignup from '../components/NewsletterSignup'
+import { trackFormSubmit, trackButtonClick } from '../lib/analytics'
 
 export default function Contact() {
+  const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle')
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setFormStatus('submitting')
+    trackButtonClick('Send Message', 'contact')
+    
+    // Simulate form submission (replace with actual API call)
+    setTimeout(() => {
+      setFormStatus('success')
+      trackFormSubmit('contact', true)
+      // Reset form after 3 seconds
+      setTimeout(() => {
+        setFormStatus('idle')
+        e.currentTarget.reset()
+      }, 3000)
+    }, 1000)
+  }
   return (
     <div className="min-h-screen bg-white py-20">
       <div className="container-custom max-w-4xl">
@@ -73,7 +93,7 @@ export default function Contact() {
 
         <div className="bg-white border border-gray-200 p-8 md:p-12 rounded-lg mb-16">
           <h2 className="text-2xl font-semibold mb-8 text-gray-900 tracking-tight">Send a Message</h2>
-          <form className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-900 mb-2 tracking-tight">
                 Name
@@ -109,10 +129,14 @@ export default function Contact() {
             </div>
             <button
               type="submit"
-              className="w-full px-6 py-4 bg-gray-900 text-white font-semibold rounded-md hover:bg-gray-800 transition-all duration-200 shadow-lg hover:shadow-xl"
+              disabled={formStatus === 'submitting'}
+              className="w-full px-6 py-4 bg-gray-900 text-white font-semibold rounded-md hover:bg-gray-800 transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Send Message
+              {formStatus === 'submitting' ? 'Sending...' : formStatus === 'success' ? 'Message Sent!' : 'Send Message'}
             </button>
+            {formStatus === 'success' && (
+              <p className="text-green-600 text-sm text-center">Thank you! Your message has been sent.</p>
+            )}
           </form>
         </div>
 

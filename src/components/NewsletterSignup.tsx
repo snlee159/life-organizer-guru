@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Gift, Mail } from 'lucide-react'
 import { supabase, isSupabaseConfigured } from '../lib/supabase'
+import { trackNewsletterSignup, trackFormSubmit, trackButtonClick } from '../lib/analytics'
 
 export default function NewsletterSignup() {
   const [email, setEmail] = useState('')
@@ -18,6 +19,8 @@ export default function NewsletterSignup() {
         setMessage('Thank you for subscribing! Check your email for your free product.')
         setStatus('success')
         setEmail('')
+        trackNewsletterSignup(true)
+        trackFormSubmit('newsletter', true)
         console.log('Newsletter signup (Supabase not configured):', email)
       }, 500)
       return
@@ -32,6 +35,8 @@ export default function NewsletterSignup() {
         if (error.code === '23505') {
           setMessage('You are already subscribed!')
           setStatus('error')
+          trackNewsletterSignup(false)
+          trackFormSubmit('newsletter', false)
         } else {
           throw error
         }
@@ -39,10 +44,14 @@ export default function NewsletterSignup() {
         setMessage('Thank you for subscribing! Check your email for your free product.')
         setStatus('success')
         setEmail('')
+        trackNewsletterSignup(true)
+        trackFormSubmit('newsletter', true)
       }
     } catch (error) {
       setMessage('Something went wrong. Please try again.')
       setStatus('error')
+      trackNewsletterSignup(false)
+      trackFormSubmit('newsletter', false)
       console.error('Newsletter signup error:', error)
     }
   }
@@ -87,6 +96,7 @@ export default function NewsletterSignup() {
               <button
                 type="submit"
                 disabled={status === 'loading'}
+                onClick={() => trackButtonClick('Get Free Product', 'newsletter')}
                 className="px-10 py-4 bg-primary-900 text-white font-medium rounded-sm hover:bg-primary-800 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap shadow-soft hover:shadow-luxury tracking-wide uppercase text-sm"
               >
                 {status === 'loading' ? 'Subscribing...' : 'Get Free Product'}
