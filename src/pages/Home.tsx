@@ -6,32 +6,48 @@ export default function Home() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="relative bg-white section-spacing overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-primary-50/50 to-transparent"></div>
-        <div className="container-custom relative">
+      <section className="relative section-spacing overflow-hidden">
+        {/* Fallback background color - behind everything */}
+        <div className="absolute inset-0 bg-primary-50 z-0"></div>
+        
+        {/* Background Image */}
+        <div 
+          className="absolute inset-0 z-[1] bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: 'url(/hero-background.png)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        >
+          {/* Overlay for readability */}
+          <div className="absolute inset-0 bg-gradient-to-b from-primary-900/60 via-primary-900/40 to-primary-900/50"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-primary-900/30 to-transparent"></div>
+        </div>
+        
+        <div className="container-custom relative z-10">
           <div className="max-w-5xl mx-auto text-center">
             <div className="mb-6">
-              <span className="inline-block px-4 py-1.5 text-xs font-medium tracking-wider uppercase text-primary-600 bg-primary-100 rounded-full">
+              <span className="inline-block px-4 py-1.5 text-xs font-medium tracking-wider uppercase text-white bg-white/20 backdrop-blur-sm rounded-full border border-white/30">
                 Curated Organization Solutions
               </span>
             </div>
-            <h1 className="text-display-1 md:text-[5.5rem] lg:text-[6.5rem] font-display font-bold text-primary-900 mb-8 tracking-tighter text-balance leading-[1.05] mx-auto">
+            <h1 className="text-display-1 md:text-[5.5rem] lg:text-[6.5rem] font-display font-bold text-white mb-8 tracking-tighter text-balance leading-[1.05] mx-auto drop-shadow-lg">
               Life Organizer Guru
             </h1>
-            <p className="text-xl md:text-2xl text-primary-600 mb-12 max-w-3xl mx-auto leading-relaxed font-light text-balance">
+            <p className="text-xl md:text-2xl text-white/95 mb-12 max-w-3xl mx-auto leading-relaxed font-light text-balance drop-shadow-md">
               Transform your life through intentional organization. Master productivity, reduce stress, and create harmony across life, business, relationships, and home.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link
                 to="/products"
-                className="group px-10 py-4 bg-primary-900 text-white font-medium rounded-sm hover:bg-primary-800 transition-all duration-300 shadow-soft hover:shadow-luxury tracking-wide"
+                className="group px-10 py-4 bg-white text-primary-900 font-medium rounded-sm hover:bg-primary-50 transition-all duration-300 shadow-luxury hover:shadow-xl tracking-wide"
               >
                 Explore Products
                 <span className="inline-block ml-2 group-hover:translate-x-1 transition-transform">→</span>
               </Link>
               <Link
                 to="/services"
-                className="px-10 py-4 bg-white text-primary-900 font-medium rounded-sm border border-primary-300 hover:border-primary-400 hover:bg-primary-50 transition-all duration-300 tracking-wide"
+                className="px-10 py-4 bg-white/10 backdrop-blur-sm text-white font-medium rounded-sm border border-white/30 hover:bg-white/20 transition-all duration-300 tracking-wide"
               >
                 Book Consultation
               </Link>
