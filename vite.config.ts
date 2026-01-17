@@ -4,16 +4,12 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  server: {
-    // Ensure SPA routing works in development
-    historyApiFallback: true,
-  },
+  // Vite automatically handles SPA routing in development
+  // For production, use the hosting platform config files (vercel.json, _redirects, etc.)
   preview: {
-    // Ensure SPA routing works in preview mode
     port: 4173,
   },
   build: {
-    // Ensure proper build output
     outDir: 'dist',
     assetsDir: 'assets',
   },

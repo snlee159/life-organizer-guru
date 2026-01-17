@@ -38,73 +38,85 @@ function checkRateLimit(clientId: string): boolean {
   return true
 }
 
-function checkCORS(req: Request): boolean {
+function normalizeOrigin(origin: string): string {
+  // Remove trailing slash and normalize
+  return origin.replace(/\/$/, '').toLowerCase()
+}
+
+function checkCORS(req: Request): { allowed: boolean; origin: string | null } {
   const origin = req.headers.get('origin')
   
   // If no allowed origins configured, allow all (for development)
-  // This allows localhost and any origin when ALLOWED_ORIGINS is not set
   if (ALLOWED_ORIGINS.length === 0) {
-    return true
+    return { allowed: true, origin }
   }
 
-  // Check if origin is allowed
-  if (origin && ALLOWED_ORIGINS.includes(origin)) {
-    return true
+  if (!origin) {
+    // Check referer as fallback
+    const referer = req.headers.get('referer')
+    if (referer) {
+      try {
+        const refererOrigin = normalizeOrigin(new URL(referer).origin)
+        const normalizedAllowed = ALLOWED_ORIGINS.map(normalizeOrigin)
+        if (normalizedAllowed.includes(refererOrigin)) {
+          return { allowed: true, origin: new URL(referer).origin }
+        }
+      } catch {
+        // Invalid referer URL, ignore
+      }
+    }
+    return { allowed: false, origin: null }
+  }
+
+  // Normalize and check origin
+  const normalizedOrigin = normalizeOrigin(origin)
+  const normalizedAllowed = ALLOWED_ORIGINS.map(normalizeOrigin)
+  
+  if (normalizedAllowed.includes(normalizedOrigin)) {
+    return { allowed: true, origin }
   }
 
   // Also check referer header as fallback
   const referer = req.headers.get('referer')
   if (referer) {
     try {
-      const refererOrigin = new URL(referer).origin
-      if (ALLOWED_ORIGINS.includes(refererOrigin)) {
-        return true
+      const refererOrigin = normalizeOrigin(new URL(referer).origin)
+      if (normalizedAllowed.includes(refererOrigin)) {
+        return { allowed: true, origin: new URL(referer).origin }
       }
     } catch {
       // Invalid referer URL, ignore
     }
   }
 
-  // In development, also allow localhost even if not explicitly listed
-  // This makes local development easier while still protecting production
-  if (origin) {
-    const isLocalhost = origin.startsWith('http://localhost') || 
-                        origin.startsWith('http://127.0.0.1') ||
-                        origin.includes('localhost')
-    if (isLocalhost) {
-      // Allow localhost if ALLOWED_ORIGINS includes any localhost variant
-      // or if we're in development mode (no production domains configured)
-      const hasProductionDomains = ALLOWED_ORIGINS.some(orig => 
-        orig.includes('https://') && !orig.includes('localhost')
-      )
-      if (!hasProductionDomains) {
-        return true // Allow localhost in development
-      }
-    }
-  }
-
-  return false
+  return { allowed: false, origin }
 }
 
-function getCORSHeaders(origin: string | null): HeadersInit {
+function getCORSHeaders(allowedOrigin: string | null, allowAll: boolean = false): HeadersInit {
   const headers: HeadersInit = {
     'Content-Type': 'application/json',
   }
 
-  if (origin && (ALLOWED_ORIGINS.length === 0 || ALLOWED_ORIGINS.includes(origin))) {
-    headers['Access-Control-Allow-Origin'] = origin
-    headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS'
-    headers['Access-Control-Allow-Headers'] = 'Content-Type'
+  // Always set CORS headers to allow browser to read the response
+  if (allowAll || ALLOWED_ORIGINS.length === 0) {
+    headers['Access-Control-Allow-Origin'] = '*'
+  } else if (allowedOrigin) {
+    headers['Access-Control-Allow-Origin'] = allowedOrigin
   }
+  
+  headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS'
+  headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+  headers['Access-Control-Allow-Credentials'] = 'false'
 
   return headers
 }
 
 serve(async (req) => {
   const origin = req.headers.get('origin')
-  const corsHeaders = getCORSHeaders(origin)
+  const corsCheck = checkCORS(req)
+  const corsHeaders = getCORSHeaders(corsCheck.origin, ALLOWED_ORIGINS.length === 0)
 
-  // Handle CORS preflight
+  // Handle CORS preflight - always allow OPTIONS
   if (req.method === 'OPTIONS') {
     return new Response(null, { status: 204, headers: corsHeaders })
   }
@@ -117,8 +129,8 @@ serve(async (req) => {
     )
   }
 
-  // Check CORS
-  if (!checkCORS(req)) {
+  // Check CORS - but still return CORS headers so browser can read error
+  if (!corsCheck.allowed) {
     return new Response(
       JSON.stringify({ error: 'Forbidden: Origin not allowed' }),
       { status: 403, headers: corsHeaders }
