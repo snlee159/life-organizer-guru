@@ -105,7 +105,7 @@ function getCORSHeaders(allowedOrigin: string | null, allowAll: boolean = false)
   }
   
   headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS'
-  headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+  headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, x-client-info, apikey'
   headers['Access-Control-Allow-Credentials'] = 'false'
 
   return headers

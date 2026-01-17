@@ -72,7 +72,7 @@ function getCORSHeaders(allowedOrigin: string | null, allowAll: boolean = false)
   }
   
   headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS'
-  headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+  headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, x-client-info, apikey'
   headers['Access-Control-Allow-Credentials'] = 'false'
 
   return headers
@@ -107,15 +107,15 @@ serve(async (req) => {
   try {
     const { email, adminToken } = await req.json()
 
-    // Verify admin authentication token before allowing database writes
+    // Require admin authentication token - must authenticate via admin-auth first
     if (!adminToken) {
       return new Response(
-        JSON.stringify({ error: 'Unauthorized: Admin authentication required' }),
+        JSON.stringify({ error: 'Unauthorized: Admin authentication required. Please log in as admin first.' }),
         { status: 401, headers: corsHeaders }
       )
     }
 
-    // Verify token format and extract timestamp
+    // Verify admin authentication token
     try {
       const decoded = atob(adminToken)
       const [timestamp, password] = decoded.split(':')
@@ -126,7 +126,7 @@ serve(async (req) => {
       
       if (!password || password !== ADMIN_PASSWORD || tokenAge > maxAge || tokenAge < 0) {
         return new Response(
-          JSON.stringify({ error: 'Unauthorized: Invalid or expired admin token' }),
+          JSON.stringify({ error: 'Unauthorized: Invalid or expired admin token. Please log in again.' }),
           { status: 401, headers: corsHeaders }
         )
       }
