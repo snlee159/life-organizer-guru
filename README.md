@@ -111,6 +111,21 @@ npm run build
 
 The built files will be in the `dist` directory.
 
+### 8. Deploy
+
+The project includes SPA routing configuration files for different hosting platforms:
+
+- **Vercel**: `vercel.json` (automatically detected)
+- **Netlify**: `public/_redirects` (automatically detected)
+- **Apache**: `.htaccess` (copy to your web root)
+- **Nginx**: `nginx.conf` (use as reference for your nginx config)
+
+**Important**: After building, ensure your hosting platform is configured to serve `index.html` for all routes. This prevents 404 errors when refreshing pages.
+
+**For Vercel/Netlify**: The configuration files are automatically detected - just deploy!
+
+**For other platforms**: Copy the appropriate configuration file to your server.
+
 ## Admin Access
 
 - Navigate to `/admin` to access the admin dashboard
