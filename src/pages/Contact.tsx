@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import emailjs from '@emailjs/browser'
 import NewsletterSignup from '../components/NewsletterSignup'
 import { trackFormSubmit, trackButtonClick } from '../lib/analytics'
 
@@ -10,16 +11,42 @@ export default function Contact() {
     setFormStatus('submitting')
     trackButtonClick('Send Message', 'contact')
     
-    // Simulate form submission (replace with actual API call)
-    setTimeout(() => {
+    const form = e.currentTarget
+    const formData = {
+      name: (form.querySelector('#name') as HTMLInputElement).value,
+      email: (form.querySelector('#email') as HTMLInputElement).value,
+      message: (form.querySelector('#message') as HTMLTextAreaElement).value,
+    }
+
+    try {
+      await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          message: formData.message,
+          to_email: import.meta.env.VITE_EMAILJS_TO_EMAIL || 'contact@lifeorganizerguru.com',
+        },
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+      )
+      
       setFormStatus('success')
       trackFormSubmit('contact', true)
       // Reset form after 3 seconds
       setTimeout(() => {
         setFormStatus('idle')
-        e.currentTarget.reset()
+        form.reset()
       }, 3000)
-    }, 1000)
+    } catch (error) {
+      console.error('EmailJS error:', error)
+      setFormStatus('error')
+      trackFormSubmit('contact', false)
+      // Reset error state after 5 seconds
+      setTimeout(() => {
+        setFormStatus('idle')
+      }, 5000)
+    }
   }
   return (
     <div className="min-h-screen bg-white py-20">
@@ -136,6 +163,9 @@ export default function Contact() {
             </button>
             {formStatus === 'success' && (
               <p className="text-green-600 text-sm text-center">Thank you! Your message has been sent.</p>
+            )}
+            {formStatus === 'error' && (
+              <p className="text-red-600 text-sm text-center">Sorry, there was an error sending your message. Please try again or email us directly.</p>
             )}
           </form>
         </div>

@@ -77,7 +77,7 @@ export default function Home() {
                   <BookOpen className="w-7 h-7 text-primary-700" strokeWidth={1.5} />
                 </div>
               </div>
-              <h3 className="text-2xl font-display font-semibold mb-4 text-primary-900 tracking-tight">E-Books & Planners</h3>
+              <h3 className="text-2xl font-display font-semibold mb-4 text-primary-900 tracking-tight">Books & Planners</h3>
               <p className="text-primary-600 leading-relaxed font-light">
                 Comprehensive guides on stress management, task organization, productivity mindset, and more.
               </p>
@@ -90,7 +90,7 @@ export default function Home() {
               </div>
               <h3 className="text-2xl font-display font-semibold mb-4 text-primary-900 tracking-tight">Consulting Services</h3>
               <p className="text-primary-600 leading-relaxed font-light">
-                Personalized consulting for interior organization, mindset coaching, and life optimization.
+                Personalized consulting for organizational solutions, mindset coaching, and life optimization.
               </p>
             </div>
             <div className="group bg-white p-10 rounded-sm border border-primary-200 hover:border-primary-400 transition-all duration-500 hover:shadow-luxury">

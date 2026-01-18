@@ -6,7 +6,8 @@ export default function Navbar() {
     <nav className="bg-white/80 backdrop-blur-md border-b border-primary-200 sticky top-0 z-50">
       <div className="container-custom">
         <div className="flex justify-between items-center h-24">
-          <Link to="/" className="text-2xl font-display font-semibold text-primary-900 tracking-tighter hover:text-primary-700 transition-colors duration-300">
+          <Link to="/" className="flex items-center gap-3 text-2xl font-display font-semibold text-primary-900 tracking-tighter hover:text-primary-700 transition-colors duration-300">
+            <img src="/favicon.svg" alt="Life Organizer Guru Logo" className="w-8 h-8" />
             Life Organizer Guru
           </Link>
           <div className="hidden md:flex items-center space-x-12">

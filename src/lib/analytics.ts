@@ -74,3 +74,4 @@ export const trackNewsletterSignup = (success: boolean = true) => {
   trackEvent('signup', 'newsletter', success ? 'success' : 'error');
 };
 
+

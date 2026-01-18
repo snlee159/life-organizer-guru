@@ -5,69 +5,60 @@ export default function Products() {
   // The entire product card is clickable and will open the link in a new tab
   const products = [
     {
-      category: 'E-Books',
+      category: 'Apps & Tools',
       items: [
         {
-          title: 'Managing Stress: A Complete Guide',
-          description: 'Learn proven techniques to reduce stress and improve your mental well-being.',
-          price: '$9.99',
-          url: 'https://gumroad.com/l/managing-stress', // Replace with your actual Gumroad URL
-          platform: 'Gumroad',
-        },
+          title: 'Runtime Product Manager',
+          description: 'An automated product manager for your life, built to help you break down and scope tasks and prioritize with automated daily task assignment based on your goals, energy, and time.',
+          price: 'Free Tier Available',
+          url: 'https://runtimepm.com',
+          platform: 'Website',
+        }
+      ]
+    },
+    {
+      category: 'Books',
+      items: [
         {
-          title: 'Task Management Mastery',
-          description: 'Master the art of organizing and prioritizing your tasks for maximum productivity.',
-          price: '$12.99',
-          url: 'https://gumroad.com/l/task-management', // Replace with your actual Gumroad URL
-          platform: 'Gumroad',
-        },
-        {
-          title: 'Productivity Mindset',
-          description: 'Transform how you think about productivity and achieve more with less effort.',
-          price: '$14.99',
-          url: 'https://gumroad.com/l/productivity-mindset', // Replace with your actual Gumroad URL
-          platform: 'Gumroad',
-        },
-        {
-          title: 'The Complete Todo System',
-          description: 'Build a bulletproof system for managing todos and never miss a deadline again.',
-          price: '$11.99',
-          url: 'https://gumroad.com/l/todo-system', // Replace with your actual Gumroad URL
-          platform: 'Gumroad',
+          title: 'Default to Less: How to Reduce Cognitive Load and Build a Life With Direction',
+          description: 'A calm, practical guide for high-functioning people who feel overwhelmed, showing how to reduce cognitive load by letting go first and rebuilding only what truly matters.',
+          price: 'Starting at $9.99', // $17.99 for paperback, $26.99 for hardcover
+          url: '', 
+          platform: 'Amazon',
         },
       ],
     },
     {
-      category: 'Planners',
+      category: 'Planners & Notion Templates',
       items: [
         {
-          title: 'Life Organizer Planner (KDP)',
-          description: 'Comprehensive planner for organizing all aspects of your life. Available on Amazon KDP.',
-          price: '$19.99',
-          url: 'https://www.amazon.com/dp/your-product-id', // Replace with your actual Amazon KDP URL
+          title: 'The LOG Book',
+          description: 'Annual planner built to help you focus on what matters and finish what you start.',
+          price: 'Starting at $19.99', // $29.99 for hardcover
+          url: '', 
           platform: 'Amazon',
         },
         {
-          title: 'Digital Planner Pack (GoodNotes)',
-          description: 'Beautiful digital planners designed for GoodNotes. Perfect for iPad users.',
-          price: '$24.99',
-          url: 'https://gumroad.com/l/digital-planner', // Replace with your actual Gumroad/Etsy URL
-          platform: 'Gumroad',
+          title: 'Reading List Template for Notion',
+          description: 'A template for Notion to help you track your reading list and progress.',
+          price: '$1.00',
+          url: 'https://www.notion.so/marketplace/templates/virtual-bookcase-smart-reading-list',
+          platform: 'Notion',
         },
         {
-          title: 'Business Organization Planner',
-          description: 'Specialized planner for entrepreneurs and business professionals.',
-          price: '$22.99',
-          url: 'https://www.etsy.com/listing/your-product-id', // Replace with your actual Etsy URL
-          platform: 'Etsy',
+          title: 'Easy Peasy Debt Tracker Template for Notion',
+          description: 'A template for Notion to help you track your debt and progress.',
+          price: '$1.00',
+          url: 'https://www.notion.so/marketplace/templates/easy-peasy-debt-tracker',
+          platform: 'Notion',
         },
         {
-          title: 'Home Organization Planner',
-          description: 'Everything you need to organize your home, from decluttering to maintenance.',
-          price: '$18.99',
-          url: 'https://www.etsy.com/listing/your-product-id', // Replace with your actual Etsy URL
-          platform: 'Etsy',
-        },
+          title: 'Task & Sprint Tracking Template for Notion',
+          description: 'A template for Notion to help you track your tasks and sprints.',
+          price: '$1.00',
+          url: 'https://www.notion.so/marketplace/templates/task-sprint-tracking',
+          platform: 'Notion',
+        }
       ],
     },
   ]
