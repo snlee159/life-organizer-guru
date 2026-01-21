@@ -41,7 +41,7 @@ export default function Footer() {
             <h4 className="font-medium mb-6 text-xs tracking-wider uppercase text-primary-400">Connect</h4>
             <ul className="space-y-4">
               <li>
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-primary-300 hover:text-white transition-colors text-sm font-light group">
+                <a href="https://www.linkedin.com/company/life-organizer-guru" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-primary-300 hover:text-white transition-colors text-sm font-light group">
                   <Linkedin className="w-4 h-4 group-hover:scale-110 transition-transform" strokeWidth={1.5} />
                   LinkedIn
                 </a>
@@ -65,7 +65,7 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="https://medium.com/@yourusername" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-primary-300 hover:text-white transition-colors text-sm font-light group">
+                <a href="https://medium.com/@life-organizer-guru" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-primary-300 hover:text-white transition-colors text-sm font-light group">
                   <BookOpen className="w-4 h-4 group-hover:scale-110 transition-transform" strokeWidth={1.5} />
                   Medium
                 </a>
