@@ -13,6 +13,7 @@ export default function Products() {
           price: 'Free Tier Available',
           url: 'https://runtimepm.com',
           platform: 'Website',
+          image: '/images/runtime-pm-display.jpeg',
         }
       ]
     },
@@ -25,6 +26,7 @@ export default function Products() {
           price: 'Starting at $9.99', // $17.99 for paperback, $26.99 for hardcover
           url: '', 
           platform: 'Amazon',
+          image: '/images/default-to-less.png',
         },
       ],
     },
@@ -35,29 +37,33 @@ export default function Products() {
           title: 'The LOG Book',
           description: 'Annual planner built to help you focus on what matters and finish what you start.',
           price: 'Starting at $19.99', // $29.99 for hardcover
-          url: '', 
+          url: 'https://www.amazon.com/dp/B0GHDSCSZ2', 
           platform: 'Amazon',
+          image: '/images/log_book_display.jpeg',
         },
         {
           title: 'Reading List Template for Notion',
           description: 'A template for Notion to help you track your reading list and progress.',
-          price: '$1.00',
+          price: 'Free for a limited time',
           url: 'https://www.notion.so/marketplace/templates/virtual-bookcase-smart-reading-list',
           platform: 'Notion',
+          image: '/images/reading-list-template.png',
         },
         {
           title: 'Easy Peasy Debt Tracker Template for Notion',
           description: 'A template for Notion to help you track your debt and progress.',
-          price: '$1.00',
+          price: 'Free for a limited time',
           url: 'https://www.notion.so/marketplace/templates/easy-peasy-debt-tracker',
           platform: 'Notion',
+          image: '/images/debt-tracker-template.png',
         },
         {
           title: 'Task & Sprint Tracking Template for Notion',
           description: 'A template for Notion to help you track your tasks and sprints.',
-          price: '$1.00',
+          price: 'Free for a limited time',
           url: 'https://www.notion.so/marketplace/templates/task-sprint-tracking',
           platform: 'Notion',
+          image: '/images/task-sprint-template.png',
         }
       ],
     },
@@ -83,15 +89,30 @@ export default function Products() {
                   href={product.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group bg-white p-10 rounded-sm border border-primary-200 hover:border-primary-400 hover:shadow-luxury transition-all duration-500 block cursor-pointer"
+                  className="group bg-white rounded-sm border border-primary-200 hover:border-primary-400 hover:shadow-luxury transition-all duration-500 block cursor-pointer overflow-hidden"
                 >
-                  <h3 className="text-2xl font-display font-semibold mb-5 text-primary-900 tracking-tight group-hover:text-primary-700 transition-colors">{product.title}</h3>
-                  <p className="text-primary-600 mb-8 leading-relaxed font-light">{product.description}</p>
-                  <div className="flex justify-between items-center pt-6 border-t border-primary-100">
-                    <span className="text-2xl font-display font-semibold text-primary-900">{product.price}</span>
-                    <div className="flex items-center gap-2 px-6 py-2.5 bg-primary-900 text-white font-medium rounded-sm group-hover:bg-primary-800 transition-all duration-300 text-sm tracking-wide uppercase">
-                      View on {product.platform}
-                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" strokeWidth={1.5} />
+                  <div className="aspect-video w-full bg-primary-100 overflow-hidden">
+                    <img 
+                      src={product.image} 
+                      alt={product.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      onError={(e) => {
+                        // Fallback to a placeholder if image fails to load
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                        target.parentElement!.style.background = 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)';
+                      }}
+                    />
+                  </div>
+                  <div className="p-10">
+                    <h3 className="text-2xl font-display font-semibold mb-5 text-primary-900 tracking-tight group-hover:text-primary-700 transition-colors">{product.title}</h3>
+                    <p className="text-primary-600 mb-8 leading-relaxed font-light">{product.description}</p>
+                    <div className="flex justify-between items-center pt-6 border-t border-primary-100">
+                      <span className="text-2xl font-display font-semibold text-primary-900">{product.price}</span>
+                      <div className="flex items-center gap-2 px-6 py-2.5 bg-primary-900 text-white font-medium rounded-sm group-hover:bg-primary-800 transition-all duration-300 text-sm tracking-wide uppercase">
+                        View on {product.platform}
+                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" strokeWidth={1.5} />
+                      </div>
                     </div>
                   </div>
                 </a>
