@@ -1,6 +1,9 @@
+import { Link } from 'react-router-dom'
+
 export default function Services() {
   const services = [
     {
+      id: 'interior-organization',
       title: 'Interior Organization Consulting',
       description: 'Transform your living and working spaces into organized, functional environments. I\'ll help you declutter, optimize storage, and create systems that work for your lifestyle.',
       features: [
@@ -12,6 +15,7 @@ export default function Services() {
       price: 'Starting at $150/hour',
     },
     {
+      id: 'mindset-coaching',
       title: 'Mindset Coaching',
       description: 'Develop a productivity mindset and overcome mental barriers to organization. Learn to think differently about tasks, priorities, and time management.',
       features: [
@@ -23,6 +27,7 @@ export default function Services() {
       price: 'Starting at $120/hour',
     },
     {
+      id: 'life-organization',
       title: 'Life Organization Consulting',
       description: 'Comprehensive consulting for organizing all aspects of your life: personal tasks, business operations, relationships, and home management.',
       features: [
@@ -34,6 +39,7 @@ export default function Services() {
       price: 'Starting at $200/hour',
     },
     {
+      id: 'business-organization',
       title: 'Business Organization',
       description: 'Help your business run more efficiently with better systems, processes, and organization strategies.',
       features: [
@@ -50,7 +56,7 @@ export default function Services() {
     <div className="min-h-screen bg-white py-20">
       <div className="container-custom">
         <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 tracking-tighter">Our Services (Coming Soon)</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 tracking-tighter">Our Services</h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Personalized consulting services to help you organize every aspect of your life. 
             Book a consultation to get started on your journey to a more organized, stress-free life.
@@ -75,12 +81,12 @@ export default function Services() {
               </ul>
               <div className="flex justify-between items-center pt-6 border-t border-gray-100">
                 <span className="text-xl font-bold text-gray-900">{service.price}</span>
-                <button 
-                  disabled
-                  className="px-6 py-2.5 bg-gray-300 text-gray-500 font-semibold rounded-md cursor-not-allowed opacity-60"
+                <Link
+                  to={`/contact?service=${service.id}`}
+                  className="px-6 py-2.5 bg-gray-900 text-white font-semibold rounded-md hover:bg-gray-800 transition-all duration-200 shadow-lg hover:shadow-xl"
                 >
-                  Coming Soon
-                </button>
+                  Request
+                </Link>
               </div>
             </div>
           ))}

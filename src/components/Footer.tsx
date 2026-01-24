@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Linkedin, Twitter, Instagram, Mail, BookOpen } from 'lucide-react'
+import { Linkedin, /* Twitter, */ Instagram, Mail, BookOpen } from 'lucide-react'
 
 export default function Footer() {
   return (
@@ -46,12 +46,12 @@ export default function Footer() {
                   LinkedIn
                 </a>
               </li>
-              <li>
+              {/* <li>
                 <a href="https://twitter.com/LifeGuru" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-primary-300 hover:text-white transition-colors text-sm font-light group">
                   <Twitter className="w-4 h-4 group-hover:scale-110 transition-transform" strokeWidth={1.5} />
                   Twitter
                 </a>
-              </li>
+              </li> */}
               <li>
                 <a href="https://instagram.com/lifeorganizerguru" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-primary-300 hover:text-white transition-colors text-sm font-light group">
                   <Instagram className="w-4 h-4 group-hover:scale-110 transition-transform" strokeWidth={1.5} />

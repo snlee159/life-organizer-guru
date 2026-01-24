@@ -11,6 +11,17 @@ import Admin from './pages/Admin'
 import Unsubscribe from './pages/Unsubscribe'
 import { trackPageView, trackClick } from './lib/analytics'
 
+// Component to scroll to top on route changes
+function ScrollToTop() {
+  const location = useLocation()
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [location])
+
+  return null
+}
+
 // Component to track page views on route changes
 function PageViewTracker() {
   const location = useLocation()
@@ -58,6 +69,7 @@ function ClickTracker() {
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <PageViewTracker />
       <ClickTracker />
       <div className="min-h-screen flex flex-col bg-white">

@@ -1,10 +1,51 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import emailjs from '@emailjs/browser'
 import NewsletterSignup from '../components/NewsletterSignup'
 import { trackFormSubmit, trackButtonClick } from '../lib/analytics'
 
 export default function Contact() {
   const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle')
+  const [searchParams] = useSearchParams()
+  const formRef = useRef<HTMLDivElement>(null)
+  const messageRef = useRef<HTMLTextAreaElement>(null)
+
+  const serviceMessages: Record<string, string> = {
+    'interior-organization': `Hi! I'm interested in learning more about your Interior Organization Consulting service.
+
+I'd love to discuss how you can help me transform my living and working spaces into organized, functional environments. Please let me know about availability and next steps.
+
+Thank you!`,
+    'mindset-coaching': `Hi! I'm interested in your Mindset Coaching service.
+
+I'd like to develop a productivity mindset and overcome mental barriers to organization. Please let me know about availability and how we can get started.
+
+Thank you!`,
+    'life-organization': `Hi! I'm interested in your Life Organization Consulting service.
+
+I'd love to get comprehensive consulting for organizing all aspects of my life. Please let me know about availability and next steps.
+
+Thank you!`,
+    'business-organization': `Hi! I'm interested in your Business Organization service.
+
+I'd like to help my business run more efficiently with better systems, processes, and organization strategies. Please let me know about availability and how we can get started.
+
+Thank you!`,
+  }
+
+  useEffect(() => {
+    const serviceId = searchParams.get('service')
+    if (serviceId && serviceMessages[serviceId]) {
+      // Scroll to form after a short delay to ensure page is loaded
+      setTimeout(() => {
+        formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        // Pre-fill the message field
+        if (messageRef.current) {
+          messageRef.current.value = serviceMessages[serviceId]
+        }
+      }, 100)
+    }
+  }, [searchParams])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -118,7 +159,7 @@ export default function Contact() {
           </div>
         </div>
 
-        <div className="bg-white border border-gray-200 p-8 md:p-12 rounded-lg mb-16">
+        <div ref={formRef} className="bg-white border border-gray-200 p-8 md:p-12 rounded-lg mb-16">
           <h2 className="text-2xl font-semibold mb-8 text-gray-900 tracking-tight">Send a Message</h2>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
@@ -148,6 +189,7 @@ export default function Contact() {
                 Message
               </label>
               <textarea
+                ref={messageRef}
                 id="message"
                 rows={6}
                 className="w-full px-5 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all bg-white"
