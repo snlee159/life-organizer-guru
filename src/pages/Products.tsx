@@ -23,8 +23,8 @@ export default function Products() {
         {
           title: 'Default to Less: How to Reduce Cognitive Load and Build a Life With Direction',
           description: 'A calm, practical guide for high-functioning people who feel overwhelmed, showing how to reduce cognitive load by letting go first and rebuilding only what truly matters.',
-          price: 'Starting at $9.99', // $17.99 for paperback, $26.99 for hardcover
-          url: '', 
+          price: 'Starting at $7.99', // $17.99 for paperback, $26.99 for hardcover
+          url: 'https://www.amazon.com/dp/B0GJF2CCS7', 
           platform: 'Amazon',
           image: '/images/default-to-less.png',
         },
@@ -36,7 +36,7 @@ export default function Products() {
         {
           title: 'The LOG Book',
           description: 'Annual planner built to help you focus on what matters and finish what you start.',
-          price: 'Starting at $19.99', // $29.99 for hardcover
+          price: 'Starting at $15.99', // $29.99 for hardcover
           url: 'https://www.amazon.com/dp/B0GHDSCSZ2', 
           platform: 'Amazon',
           image: '/images/log_book_display.jpeg',
