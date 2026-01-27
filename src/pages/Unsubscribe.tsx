@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { supabase, isSupabaseConfigured } from '../lib/supabase'
+import * as api from '../services/api-secure'
 
 export default function Unsubscribe() {
   const [searchParams] = useSearchParams()
@@ -17,25 +17,23 @@ export default function Unsubscribe() {
       }
 
       // If Supabase is not configured, show success message anyway
-      if (!isSupabaseConfigured()) {
+      if (!api.isSupabaseConfigured()) {
         setStatus('success')
         setMessage('You have been successfully unsubscribed from our newsletter.')
         return
       }
 
       try {
-        const { error } = await supabase
-          .from('newsletter_subscribers')
-          .update({ subscribed: false })
-          .eq('email', email)
+        const result = await api.unsubscribeNewsletter(email)
 
-        if (error) {
-          throw error
+        if (result.success) {
+          setStatus('success')
+          setMessage(result.message || 'You have been successfully unsubscribed from our newsletter.')
+        } else {
+          throw new Error(result.message || 'Failed to unsubscribe')
         }
-
-        setStatus('success')
-        setMessage('You have been successfully unsubscribed from our newsletter.')
       } catch (error) {
+        console.error('Unsubscribe error:', error)
         setStatus('error')
         setMessage('An error occurred. Please contact us directly.')
       }

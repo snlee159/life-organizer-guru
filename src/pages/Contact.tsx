@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import emailjs from '@emailjs/browser'
+import * as api from '../services/api-secure'
 import NewsletterSignup from '../components/NewsletterSignup'
 import { trackFormSubmit, trackButtonClick } from '../lib/analytics'
 
 export default function Contact() {
   const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle')
+  const [errorMessage, setErrorMessage] = useState('')
   const [searchParams] = useSearchParams()
   const formRef = useRef<HTMLDivElement>(null)
   const messageRef = useRef<HTMLTextAreaElement>(null)
@@ -50,6 +51,7 @@ Thank you!`,
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setFormStatus('submitting')
+    setErrorMessage('')
     trackButtonClick('Send Message', 'contact')
     
     const form = e.currentTarget
@@ -60,32 +62,29 @@ Thank you!`,
     }
 
     try {
-      await emailjs.send(
-        import.meta.env.VITE_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-        {
-          from_name: formData.name,
-          from_email: formData.email,
-          message: formData.message,
-          to_email: import.meta.env.VITE_EMAILJS_TO_EMAIL || 'contact@lifeorganizerguru.com',
-        },
-        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-      )
+      const result = await api.submitContactForm(formData)
       
-      setFormStatus('success')
-      trackFormSubmit('contact', true)
-      // Reset form after 3 seconds
-      setTimeout(() => {
-        setFormStatus('idle')
-        form.reset()
-      }, 3000)
+      if (result.success) {
+        setFormStatus('success')
+        trackFormSubmit('contact', true)
+        // Reset form after 3 seconds
+        setTimeout(() => {
+          setFormStatus('idle')
+          form.reset()
+        }, 3000)
+      } else {
+        throw new Error(result.message || 'Failed to send message')
+      }
     } catch (error) {
-      console.error('EmailJS error:', error)
+      console.error('Contact form error:', error)
+      const message = error instanceof Error ? error.message : 'Failed to send message'
+      setErrorMessage(message)
       setFormStatus('error')
       trackFormSubmit('contact', false)
       // Reset error state after 5 seconds
       setTimeout(() => {
         setFormStatus('idle')
+        setErrorMessage('')
       }, 5000)
     }
   }
@@ -204,10 +203,12 @@ Thank you!`,
               {formStatus === 'submitting' ? 'Sending...' : formStatus === 'success' ? 'Message Sent!' : 'Send Message'}
             </button>
             {formStatus === 'success' && (
-              <p className="text-green-600 text-sm text-center">Thank you! Your message has been sent.</p>
+              <p className="text-green-600 text-sm text-center">Thank you! Your message has been sent. We'll get back to you soon.</p>
             )}
             {formStatus === 'error' && (
-              <p className="text-red-600 text-sm text-center">Sorry, there was an error sending your message. Please try again or email us directly.</p>
+              <p className="text-red-600 text-sm text-center">
+                {errorMessage || 'Sorry, there was an error sending your message. Please try again or email us directly.'}
+              </p>
             )}
           </form>
         </div>

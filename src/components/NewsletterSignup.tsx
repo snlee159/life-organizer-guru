@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Gift, Mail } from 'lucide-react'
-import { supabase, isSupabaseConfigured } from '../lib/supabase'
+import * as api from '../services/api-secure'
 import { trackNewsletterSignup, trackFormSubmit, trackButtonClick } from '../lib/analytics'
 
 export default function NewsletterSignup() {
@@ -14,7 +14,7 @@ export default function NewsletterSignup() {
     setMessage('')
 
     // If Supabase is not configured, show a message and simulate success
-    if (!isSupabaseConfigured()) {
+    if (!api.isSupabaseConfigured()) {
       setTimeout(() => {
         setMessage('Thank you for subscribing! Check your email for your free product.')
         setStatus('success')
@@ -26,54 +26,29 @@ export default function NewsletterSignup() {
     }
 
     try {
-      // Use edge function for CORS protection and security
-      // Admin authentication happens automatically in the edge function using ADMIN_PASSWORD
-      const { data, error } = await supabase.functions.invoke('newsletter-signup', {
-        body: { 
-          email
-        },
-      })
+      const result = await api.signupNewsletter(email)
 
-      if (error) {
-        throw error
-      }
-
-      if (data?.error) {
-        // Handle specific error cases
-        if (data.alreadySubscribed) {
-          setMessage('You are already subscribed!')
-          setStatus('error')
-          trackNewsletterSignup(false)
-          trackFormSubmit('newsletter', false)
-        } else if (data.error.includes('Unauthorized') || data.error.includes('admin')) {
-          setMessage('Admin authentication required. Please log in as admin first.')
-          setStatus('error')
-          trackNewsletterSignup(false)
-          trackFormSubmit('newsletter', false)
-        } else if (data.error.includes('Forbidden') || data.error.includes('Origin not allowed')) {
-          setMessage('Access denied. Please use the production website.')
-          setStatus('error')
-          trackNewsletterSignup(false)
-          trackFormSubmit('newsletter', false)
-        } else {
-          throw new Error(data.error)
-        }
+      if (result.alreadySubscribed) {
+        setMessage('You are already subscribed!')
+        setStatus('error')
+        trackNewsletterSignup(false)
+        trackFormSubmit('newsletter', false)
         return
       }
 
-      if (data?.success) {
+      if (result.success) {
         // Successfully subscribed
-        if (data.resubscribed) {
+        if (result.resubscribed) {
           setMessage('Welcome back! You have been resubscribed. Check your email for your free product.')
         } else {
-          setMessage('Thank you for subscribing! Check your email for your free product.')
+          setMessage(result.message || 'Thank you for subscribing! Check your email for your free product.')
         }
         setStatus('success')
         setEmail('')
         trackNewsletterSignup(true)
         trackFormSubmit('newsletter', true)
       } else {
-        throw new Error('Unexpected response from server')
+        throw new Error(result.message || 'Unexpected response from server')
       }
     } catch (error: any) {
       let errorMessage = 'Something went wrong. Please try again.'
@@ -81,7 +56,7 @@ export default function NewsletterSignup() {
       if (error?.message?.includes('Forbidden') || error?.message?.includes('Origin not allowed')) {
         errorMessage = 'Access denied. Please use the production website.'
       } else if (error?.message) {
-        errorMessage = `Error: ${error.message}`
+        errorMessage = error.message
       }
       
       setMessage(errorMessage)

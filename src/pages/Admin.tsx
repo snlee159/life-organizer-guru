@@ -1,85 +1,81 @@
 import { useState, useEffect } from 'react'
-import { supabase, isSupabaseConfigured } from '../lib/supabase'
+import * as api from '../services/api-secure'
+import type { Subscriber } from '../services/api-secure'
 
 export default function Admin() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [subscribers, setSubscribers] = useState<any[]>([])
+  const [subscribers, setSubscribers] = useState<Subscriber[]>([])
   const [newsletterSubject, setNewsletterSubject] = useState('')
   const [newsletterContent, setNewsletterContent] = useState('')
   const [sending, setSending] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    // Check if admin is already authenticated (stored in localStorage)
-    const authStatus = localStorage.getItem('admin_authenticated')
-    if (authStatus === 'true') {
+    // Check if admin is already authenticated (in memory only)
+    if (api.isAdminAuthenticated()) {
       setIsAuthenticated(true)
       loadSubscribers()
     }
   }, [])
 
   const loadSubscribers = async () => {
-    if (!isSupabaseConfigured()) {
+    if (!api.isSupabaseConfigured()) {
       setSubscribers([])
       return
     }
 
-    const { data, error } = await supabase
-      .from('newsletter_subscribers')
-      .select('*')
-      .eq('subscribed', true)
-
-    if (error) {
-      setSubscribers([])
-    } else {
+    try {
+      setLoading(true)
+      const data = await api.getSubscribers()
       setSubscribers(data || [])
+    } catch (error) {
+      console.error('Failed to load subscribers:', error)
+      setSubscribers([])
+      // If authentication failed, clear state
+      if (error instanceof Error && error.message.includes('authentication')) {
+        setIsAuthenticated(false)
+      }
+    } finally {
+      setLoading(false)
     }
   }
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     
-    if (!isSupabaseConfigured()) {
+    if (!api.isSupabaseConfigured()) {
       alert('Supabase is not configured. Admin login requires Supabase.')
       return
     }
 
     try {
-      // Authenticate via Supabase Edge Function (password never exposed in frontend)
-      const { data, error } = await supabase.functions.invoke('admin-auth', {
-        body: { password },
-      })
+      setLoading(true)
+      const result = await api.verifyPassword(password)
 
-      if (error) {
-        throw error
-      }
-
-      if (data?.authenticated) {
+      if (result.valid && result.authenticated) {
         setIsAuthenticated(true)
-        // Store authentication token for use with other functions
-        if (data.token) {
-          localStorage.setItem('admin_token', data.token)
-        }
-        localStorage.setItem('admin_authenticated', 'true')
-        setPassword('') // Clear password from memory
-        loadSubscribers()
+        setPassword('') // Clear password from form
+        await loadSubscribers()
       } else {
         alert('Invalid password')
         setPassword('')
       }
     } catch (error: any) {
-      alert('Login failed. Please try again.')
+      alert(error.message || 'Login failed. Please try again.')
       setPassword('')
+    } finally {
+      setLoading(false)
     }
   }
 
   const handleLogout = () => {
+    api.logout()
     setIsAuthenticated(false)
-    localStorage.removeItem('admin_authenticated')
-    localStorage.removeItem('admin_token')
     setEmail('')
     setPassword('')
+    setSubscribers([])
   }
 
   const handleSendNewsletter = async (e: React.FormEvent) => {
@@ -89,7 +85,7 @@ export default function Admin() {
       return
     }
 
-    if (!isSupabaseConfigured()) {
+    if (!api.isSupabaseConfigured()) {
       alert('Supabase is not configured. Please set up Supabase to send newsletters.')
       return
     }
@@ -102,25 +98,21 @@ export default function Admin() {
     setSending(true)
 
     try {
-      // Call Supabase Edge Function to send emails
-      // This would need to be set up in Supabase
-      const { error } = await supabase.functions.invoke('send-newsletter', {
-        body: {
-          subject: newsletterSubject,
-          content: newsletterContent,
-          subscribers: subscribers.map(s => s.email),
-        },
+      const result = await api.sendNewsletter({
+        subject: newsletterSubject,
+        content: newsletterContent,
+        subscribers: subscribers.map(s => s.email),
       })
 
-      if (error) {
-        throw error
-      }
-
-      alert(`Newsletter sent successfully to ${subscribers.length} subscribers!`)
+      alert(`Newsletter sent successfully! Sent: ${result.sent}, Failed: ${result.failed}`)
       setNewsletterSubject('')
       setNewsletterContent('')
     } catch (error: any) {
-      alert(`Error sending newsletter: ${error?.message || 'Please ensure the Supabase Edge Function is set up.'}`)
+      alert(`Error sending newsletter: ${error?.message || 'Please try again.'}`)
+      // If authentication failed, clear state
+      if (error.message?.includes('authentication')) {
+        setIsAuthenticated(false)
+      }
     } finally {
       setSending(false)
     }
@@ -131,6 +123,13 @@ export default function Admin() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12">
         <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-md">
           <h1 className="text-3xl font-bold text-center mb-6">Admin Login</h1>
+          {!api.isSupabaseConfigured() && (
+            <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+              <p className="text-yellow-800 text-sm">
+                <strong>Note:</strong> Supabase is not configured. See README.md for setup instructions.
+              </p>
+            </div>
+          )}
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
@@ -160,9 +159,10 @@ export default function Admin() {
             </div>
             <button
               type="submit"
-              className="w-full px-6 py-3 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition"
+              disabled={loading}
+              className="w-full px-6 py-3 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Login
+              {loading ? 'Logging in...' : 'Login'}
             </button>
           </form>
         </div>
@@ -183,7 +183,7 @@ export default function Admin() {
           </button>
         </div>
 
-        {!isSupabaseConfigured() && (
+        {!api.isSupabaseConfigured() && (
           <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
             <p className="text-yellow-800">
               <strong>Note:</strong> Supabase is not configured. Newsletter features require Supabase setup. 
@@ -197,7 +197,9 @@ export default function Admin() {
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-2xl font-semibold mb-4">Newsletter Subscribers</h2>
             <p className="text-gray-600 mb-4">Total: {subscribers.length}</p>
-            {!isSupabaseConfigured() ? (
+            {loading ? (
+              <p className="text-gray-500 text-sm">Loading subscribers...</p>
+            ) : !api.isSupabaseConfigured() ? (
               <p className="text-gray-500 text-sm">Configure Supabase to see subscribers.</p>
             ) : subscribers.length === 0 ? (
               <p className="text-gray-500 text-sm">No subscribers yet.</p>
