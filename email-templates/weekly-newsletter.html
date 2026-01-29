@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{NEWSLETTER_TITLE}}</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@500;600;700&display=swap');
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-weight: 400;
+            background-color: #fafafa;
+            color: #1f1d1a;
+            line-height: 1.65;
+        }
+        
+        .email-wrapper {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+        }
+        
+        .header {
+            position: relative;
+            width: 100%;
+            height: 280px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        
+        .header-overlay {
+            width: 100%;
+            height: 100%;
+            background: rgba(61, 57, 51, 0.65);
+            display: table;
+        }
+        
+        .header-content {
+            display: table-cell;
+            vertical-align: middle;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .logo {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 16px auto;
+            display: block;
+            background: white;
+            border-radius: 50%;
+            padding: 4px;
+        }
+        
+        .header-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 36px;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0;
+            letter-spacing: -0.02em;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+        }
+        
+        .issue-date {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 15px;
+            margin-top: 8px;
+            font-weight: 400;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .content {
+            padding: 44px 36px;
+        }
+        
+        .greeting {
+            font-size: 17px;
+            color: #3d3933;
+            margin-bottom: 28px;
+            line-height: 1.7;
+        }
+        
+        .section {
+            margin: 36px 0;
+        }
+        
+        .section-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 26px;
+            font-weight: 600;
+            color: #1f1d1a;
+            margin: 0 0 18px 0;
+            letter-spacing: -0.01em;
+        }
+        
+        .glass-box {
+            background: #f7f6f5;
+            padding: 28px;
+            border-radius: 10px;
+            margin: 24px 0;
+            border: 1px solid rgba(61, 57, 51, 0.06);
+        }
+        
+        .featured-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 22px;
+            font-weight: 600;
+            color: #1f1d1a;
+            margin: 0 0 14px 0;
+            letter-spacing: -0.01em;
+        }
+        
+        .featured-content {
+            color: #3d3933;
+            line-height: 1.7;
+            font-size: 16px;
+        }
+        
+        .tip-label {
+            font-weight: 600;
+            color: rgba(232, 168, 85, 0.9);
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            margin-bottom: 10px;
+        }
+        
+        .tip-content {
+            color: #3d3933;
+            line-height: 1.7;
+            font-size: 16px;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 14px 28px;
+            background: rgba(61, 57, 51, 0.95);
+            backdrop-filter: blur(10px);
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            margin: 16px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .product-highlight {
+            background: linear-gradient(135deg, #fef9f0 0%, #fef6e8 100%);
+            padding: 28px;
+            border-radius: 10px;
+            margin: 28px 0;
+            text-align: center;
+            border: 1px solid rgba(232, 168, 85, 0.15);
+        }
+        
+        .product-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 22px;
+            font-weight: 600;
+            color: #1f1d1a;
+            margin: 0 0 12px 0;
+            letter-spacing: -0.01em;
+        }
+        
+        .discount-badge {
+            display: inline-block;
+            background: rgba(232, 168, 85, 0.2);
+            border: 1px solid rgba(232, 168, 85, 0.3);
+            color: #1f1d1a;
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            margin: 10px 0;
+            letter-spacing: 0.05em;
+        }
+        
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, rgba(61, 57, 51, 0) 0%, rgba(61, 57, 51, 0.1) 50%, rgba(61, 57, 51, 0) 100%);
+            margin: 40px 0;
+        }
+        
+        .quote-box {
+            background: #fafafa;
+            padding: 28px 32px;
+            border-left: 3px solid rgba(232, 168, 85, 0.5);
+            margin: 32px 0;
+            font-style: italic;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .quote-text {
+            font-size: 18px;
+            color: #3d3933;
+            line-height: 1.65;
+            margin: 0;
+        }
+        
+        .quote-author {
+            font-size: 14px;
+            color: #7a7265;
+            margin-top: 12px;
+            font-style: normal;
+            font-weight: 500;
+        }
+        
+        .resource-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .resource-list li {
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(61, 57, 51, 0.08);
+            font-size: 16px;
+        }
+        
+        .resource-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .resource-list a {
+            color: #5c564d;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .resource-list a:hover {
+            color: #e8a855;
+        }
+        
+        .footer {
+            background: rgba(61, 57, 51, 0.97);
+            padding: 40px 36px;
+            text-align: center;
+            color: #f5f3f0;
+        }
+        
+        .footer-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .footer-tagline {
+            font-size: 14px;
+            color: rgba(245, 243, 240, 0.8);
+            margin-bottom: 24px;
+            font-weight: 300;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin: 24px 0;
+            flex-wrap: wrap;
+        }
+        
+        .social-links a {
+            color: rgba(245, 243, 240, 0.9);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .social-links a:hover {
+            color: #f1c178;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: #f1c178;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+        
+        .unsubscribe {
+            margin-top: 28px;
+            padding-top: 28px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 12px;
+            color: rgba(245, 243, 240, 0.6);
+            line-height: 1.6;
+        }
+        
+        .unsubscribe a {
+            color: rgba(245, 243, 240, 0.7);
+            text-decoration: underline;
+        }
+        
+        @media only screen and (max-width: 600px) {
+            .header {
+                height: 240px;
+            }
+            
+            .header-content {
+                padding: 32px 20px;
+            }
+            
+            .logo {
+                width: 56px;
+                height: 56px;
+                margin-bottom: 14px;
+            }
+            
+            .header-title {
+                font-size: 30px;
+            }
+            
+            .issue-date {
+                font-size: 14px;
+            }
+            
+            .content {
+                padding: 32px 24px;
+            }
+            
+            .section-title {
+                font-size: 24px;
+            }
+            
+            .glass-box, .product-highlight {
+                padding: 20px;
+            }
+            
+            .footer {
+                padding: 32px 24px;
+            }
+            
+            .social-links {
+                gap: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-wrapper">
+        <!-- Header with Hero Image -->
+        <div class="header" style="background-image: url('{{HERO_IMAGE_URL}}');">
+            <div class="header-overlay">
+                <div class="header-content">
+                    <img src="{{LOGO_URL}}" alt="Life Organizer Guru" class="logo" width="64" height="64" style="filter: brightness(0) invert(1);">
+                    <h1 class="header-title">Life Organizer Guru</h1>
+                    <p class="issue-date">{{ISSUE_DATE}}</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Content -->
+        <div class="content">
+            <!-- Greeting -->
+            <p class="greeting">
+                Hi there! 👋
+            </p>
+            
+            <!-- Main Content Section -->
+            <div class="section">
+                <h2 class="section-title">{{MAIN_SECTION_TITLE}}</h2>
+                <p style="color: #3d3933; line-height: 1.7; margin-bottom: 16px; font-size: 16px;">
+                    {{MAIN_CONTENT_PARAGRAPH_1}}
+                </p>
+                <p style="color: #3d3933; line-height: 1.7; font-size: 16px;">
+                    {{MAIN_CONTENT_PARAGRAPH_2}}
+                </p>
+            </div>
+            
+            <!-- Featured Article/Insight -->
+            <div class="glass-box">
+                <h3 class="featured-title">{{FEATURED_TITLE}}</h3>
+                <div class="featured-content">
+                    {{FEATURED_CONTENT}}
+                </div>
+            </div>
+            
+            <!-- Quick Tip of the Week -->
+            <div class="section">
+                <h2 class="section-title">This Week's Organization Tip</h2>
+                <div class="glass-box">
+                    <div class="tip-label">Pro Tip</div>
+                    <div class="tip-content">
+                        {{WEEKLY_TIP}}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <!-- Inspirational Quote -->
+            <div class="quote-box">
+                <p class="quote-text">"{{QUOTE_TEXT}}"</p>
+                <p class="quote-author">— {{QUOTE_AUTHOR}}</p>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <!-- Product/Service Highlight -->
+            <div class="product-highlight">
+                <h3 class="product-title">{{PRODUCT_TITLE}}</h3>
+                <p style="color: #3d3933; margin: 12px 0; font-size: 16px; line-height: 1.7;">
+                    {{PRODUCT_DESCRIPTION}}
+                </p>
+                <div class="discount-badge">{{DISCOUNT_TEXT}}</div>
+                <p style="margin-top: 20px;">
+                    <a href="{{PRODUCT_LINK}}" class="cta-button">Learn More →</a>
+                </p>
+            </div>
+            
+            <!-- Resources Section -->
+            <div class="section">
+                <h2 class="section-title">Curated Resources</h2>
+                <ul class="resource-list">
+                    <li>📖 <a href="{{RESOURCE_1_LINK}}">{{RESOURCE_1_TITLE}}</a> — {{RESOURCE_1_DESCRIPTION}}</li>
+                    <li>🎯 <a href="{{RESOURCE_2_LINK}}">{{RESOURCE_2_TITLE}}</a> — {{RESOURCE_2_DESCRIPTION}}</li>
+                    <li>✨ <a href="{{RESOURCE_3_LINK}}">{{RESOURCE_3_TITLE}}</a> — {{RESOURCE_3_DESCRIPTION}}</li>
+                </ul>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <!-- Closing -->
+            <p class="greeting">
+                I hope this newsletter brings you valuable insights for your organizational journey. If you have any questions or topics you'd like me to cover, simply reply to this email—I'd love to hear from you!
+            </p>
+            
+            <p class="greeting">
+                Here's to a more organized life,<br>
+                <strong>Life Organizer Guru</strong>
+            </p>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-title">Life Organizer Guru</div>
+            <div class="footer-tagline">Transform your life through intentional organization</div>
+            
+            <div class="social-links">
+                <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+                <a href="https://twitter.com" target="_blank">Twitter</a>
+                <a href="https://threads.net" target="_blank">Threads</a>
+                <a href="https://instagram.com" target="_blank">Instagram</a>
+                <a href="https://medium.com" target="_blank">Medium</a>
+            </div>
+            
+            <div class="footer-links">
+                <a href="{{WEBSITE_URL}}">Visit Website</a>
+                <a href="{{NOTION_URL}}">Notion Templates</a>
+                <a href="{{SERVICES_URL}}">Services</a>
+                <a href="{{CONTACT_URL}}">Contact</a>
+            </div>
+            
+            <div class="unsubscribe">
+                You're receiving this email because you subscribed to Life Organizer Guru's newsletter.<br>
+                <a href="{{UNSUBSCRIBE_URL}}">Unsubscribe</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

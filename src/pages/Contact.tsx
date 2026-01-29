@@ -187,6 +187,9 @@ Thank you!`,
               <label htmlFor="message" className="block text-sm font-medium text-gray-900 mb-2 tracking-tight">
                 Message
               </label>
+              <p className="text-sm text-gray-600 mb-2">
+                Interested in consulting services? Please include any coupon code (e.g., CONSULT20) in your message.
+              </p>
               <textarea
                 ref={messageRef}
                 id="message"
