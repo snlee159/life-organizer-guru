@@ -131,8 +131,8 @@ function getWelcomeEmailHtml(
                     </div>
                     <div class="coupon-box">
                         <div class="coupon-label">Consulting</div>
-                        <div class="coupon-code">CONSULT20</div>
-                        <div class="coupon-description">20% off first session</div>
+                        <div class="coupon-code">FIRSTFREE</div>
+                        <div class="coupon-description">First consultation free</div>
                     </div>
                 </div>
                 <p style="text-align: center; margin: 24px 0 8px 0;">
