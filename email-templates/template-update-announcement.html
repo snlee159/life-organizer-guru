@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Template Update Available - Life Organizer Guru</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@500;600;700&display=swap");
+      body {
+        margin: 0;
+        padding: 0;
+        font-family:
+          "Inter",
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
+        font-weight: 400;
+        background-color: #fafafa;
+        color: #1f1d1a;
+        line-height: 1.65;
+      }
+      .email-wrapper {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #ffffff;
+      }
+      .header {
+        position: relative;
+        width: 100%;
+        height: 320px;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+      .header-overlay {
+        width: 100%;
+        height: 100%;
+        background: rgba(61, 57, 51, 0.65);
+        display: table;
+      }
+      .header-content {
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+        padding: 40px 20px;
+      }
+      .logo {
+        width: 72px;
+        height: 72px;
+        margin: 0 auto 20px auto;
+        display: block;
+        background: white;
+        border-radius: 50%;
+        padding: 4px;
+      }
+      .header-title {
+        font-family: "Playfair Display", Georgia, serif;
+        font-size: 42px;
+        font-weight: 700;
+        color: #ffffff;
+        margin: 0;
+        letter-spacing: -0.02em;
+        text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+      }
+      .header-subtitle {
+        font-size: 17px;
+        color: rgba(255, 255, 255, 0.95);
+        margin-top: 10px;
+        font-weight: 400;
+        letter-spacing: 0.01em;
+        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+      }
+      .content {
+        padding: 48px 36px;
+      }
+      .welcome-text {
+        font-size: 17px;
+        color: #3d3933;
+        margin-bottom: 20px;
+        line-height: 1.7;
+        font-weight: 400;
+      }
+      .section {
+        margin: 40px 0;
+      }
+      .section-title {
+        font-family: "Playfair Display", Georgia, serif;
+        font-size: 26px;
+        font-weight: 600;
+        color: #1f1d1a;
+        margin: 0 0 20px 0;
+        letter-spacing: -0.01em;
+      }
+      .glass-box {
+        background: #f7f6f5;
+        padding: 28px;
+        border-radius: 10px;
+        margin: 24px 0;
+        border: 1px solid rgba(61, 57, 51, 0.06);
+      }
+      .glass-box-light {
+        background: #fafafa;
+        padding: 28px;
+        border-radius: 10px;
+        margin: 24px 0;
+        border: 1px solid rgba(61, 57, 51, 0.05);
+      }
+      .highlight-box {
+        background: linear-gradient(135deg, #fef9f0 0%, #fef6e8 100%);
+        padding: 28px;
+        border-radius: 10px;
+        margin: 24px 0;
+        border: 1px solid rgba(232, 168, 85, 0.15);
+      }
+      .cta-button {
+        display: inline-block;
+        padding: 14px 28px;
+        background: rgba(61, 57, 51, 0.95);
+        backdrop-filter: blur(10px);
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 15px;
+        margin: 16px 8px 0 8px;
+      }
+      .button-container {
+        text-align: center;
+        margin: 24px 0;
+      }
+      .video-container {
+        margin: 32px 0;
+        text-align: center;
+      }
+      .video-link {
+        display: inline-block;
+        position: relative;
+        width: 100%;
+        max-width: 540px;
+      }
+      .video-thumbnail {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+        display: block;
+      }
+      .play-button {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 68px;
+        height: 48px;
+        background: rgba(255, 0, 0, 0.9);
+        border-radius: 14px;
+      }
+      .play-button:after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-35%, -50%);
+        width: 0;
+        height: 0;
+        border-left: 20px solid white;
+        border-top: 12px solid transparent;
+        border-bottom: 12px solid transparent;
+      }
+      .video-label {
+        font-size: 14px;
+        color: #7a7265;
+        font-weight: 500;
+        margin-top: 12px;
+      }
+      .feature-badge {
+        display: inline-block;
+        background: rgba(61, 57, 51, 0.08);
+        color: #3d3933;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        margin: 4px 4px 4px 0;
+      }
+      .divider {
+        height: 1px;
+        background: rgba(61, 57, 51, 0.08);
+        margin: 32px 0;
+      }
+      .instruction-box {
+        background: #f9f8f7;
+        padding: 24px;
+        border-radius: 10px;
+        margin: 20px 0;
+        border-left: 3px solid #e8a855;
+      }
+      .instruction-step {
+        color: #3d3933;
+        line-height: 1.7;
+        margin: 8px 0;
+        font-size: 15px;
+        padding-left: 8px;
+      }
+      .footer {
+        background: rgba(61, 57, 51, 0.97);
+        padding: 40px 36px;
+        text-align: center;
+        color: #f5f3f0;
+      }
+      .footer-title {
+        font-family: "Playfair Display", Georgia, serif;
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+      .footer-tagline {
+        font-size: 14px;
+        color: rgba(245, 243, 240, 0.8);
+        margin-bottom: 24px;
+        font-weight: 300;
+      }
+      .social-links {
+        display: flex;
+        justify-content: center;
+        gap: 24px;
+        margin: 24px 0;
+        flex-wrap: wrap;
+      }
+      .social-links a {
+        color: rgba(245, 243, 240, 0.9);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+      }
+      .footer-links {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin: 20px 0;
+        flex-wrap: wrap;
+      }
+      .footer-links a {
+        color: #f1c178;
+        text-decoration: none;
+        font-size: 14px;
+      }
+      .unsubscribe {
+        margin-top: 28px;
+        padding-top: 28px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        font-size: 12px;
+        color: rgba(245, 243, 240, 0.6);
+        line-height: 1.6;
+      }
+      .unsubscribe a {
+        color: rgba(245, 243, 240, 0.7);
+        text-decoration: underline;
+      }
+      @media only screen and (max-width: 600px) {
+        .header {
+          height: 280px;
+        }
+        .header-content {
+          padding: 32px 20px;
+        }
+        .logo {
+          width: 60px;
+          height: 60px;
+          margin-bottom: 16px;
+        }
+        .header-title {
+          font-size: 34px;
+        }
+        .header-subtitle {
+          font-size: 15px;
+        }
+        .content {
+          padding: 36px 24px;
+        }
+        .section-title {
+          font-size: 24px;
+        }
+        .glass-box,
+        .glass-box-light,
+        .highlight-box,
+        .instruction-box {
+          padding: 20px;
+        }
+        .footer {
+          padding: 32px 24px;
+        }
+        .social-links {
+          gap: 16px;
+        }
+        .cta-button {
+          display: block;
+          margin: 12px 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="email-wrapper">
+      <!-- Header -->
+      <div
+        class="header"
+        style="
+          background-image: url(&quot;https://lifeorganizerguru.com/hero-background.png&quot;);
+        "
+      >
+        <div class="header-overlay">
+          <div class="header-content">
+            <img
+              src="https://lifeorganizerguru.com/favicon.svg"
+              alt="Life Organizer Guru"
+              class="logo"
+              width="72"
+              height="72"
+              style="filter: brightness(0) invert(1)"
+            />
+            <h1 class="header-title">Template Updated!</h1>
+            <p class="header-subtitle">New features added just for you</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="content">
+        <p class="welcome-text">
+          <strong>Great news!</strong>
+        </p>
+
+        <p class="welcome-text">
+          We've added some exciting upgrades to your
+          <strong>Easy Peasy Debt Tracker</strong> template, and as a valued
+          customer, you get free access to all the latest improvements. Thank
+          you for being part of the Life Organizer Guru family!
+        </p>
+
+        <!-- What's New Section -->
+        <div class="section">
+          <h2 class="section-title">What's New in This Update</h2>
+          <div class="glass-box">
+            <p
+              style="
+                color: #3d3933;
+                line-height: 1.75;
+                margin: 0 0 16px 0;
+                font-size: 16px;
+              "
+            >
+              This update includes powerful new features and enhancements based
+              on customer feedback:
+            </p>
+            <div style="margin-top: 16px">
+              <span class="feature-badge">✨ Enhanced Features</span>
+              <span class="feature-badge">🎨 Improved Design</span>
+              <span class="feature-badge">⚡ Better Performance</span>
+              <span class="feature-badge">📊 Advanced Tracking</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Download Button -->
+        <div class="highlight-box">
+          <p
+            style="
+              color: #3d3933;
+              margin: 0 0 8px 0;
+              font-size: 18px;
+              font-weight: 600;
+            "
+          >
+            Download Your Updated Template
+          </p>
+          <p
+            style="
+              color: #5c564d;
+              margin: 0 0 16px 0;
+              font-size: 15px;
+              line-height: 1.6;
+            "
+          >
+            Get instant access to the latest version with all the new features
+            and improvements.
+          </p>
+          <div class="button-container">
+            <a
+              href="https://lumpy-volleyball-8a2.notion.site/Automated-Easy-Peasy-Debt-Tracker-3024ae958f608078a5cfe25f0e51b50d"
+              class="cta-button"
+              >📥 Download Latest Version</a
+            >
+          </div>
+        </div>
+
+        <!-- Video Tutorial Section -->
+        <div class="section">
+          <h2 class="section-title">How to Use the New Features</h2>
+          <p class="welcome-text">
+            Watch this quick tutorial to get the most out of your updated
+            template:
+          </p>
+          <div class="video-container">
+            <a
+              href="https://youtu.be/A_PZsP8GLEs"
+              class="video-link"
+              target="_blank"
+              style="text-decoration: none"
+            >
+              <img
+                src="https://img.youtube.com/vi/A_PZsP8GLEs/maxresdefault.jpg"
+                alt="Tutorial Video"
+                class="video-thumbnail"
+              />
+              <div class="play-button"></div>
+            </a>
+            <p class="video-label">Step-by-step guide to the new features</p>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Thank You & Review Section -->
+        <div class="section">
+          <h2 class="section-title">Thank You for Your Support</h2>
+          <p class="welcome-text">
+            Your support means everything to us at
+            <strong>Life Organizer Guru</strong>. We're constantly working to
+            improve our templates and provide you with the best organizational
+            tools to transform your productivity.
+          </p>
+
+          <div class="glass-box-light">
+            <p
+              style="
+                color: #3d3933;
+                margin: 0 0 8px 0;
+                font-size: 17px;
+                font-weight: 600;
+              "
+            >
+              ⭐ Love this template?
+            </p>
+            <p
+              style="
+                color: #5c564d;
+                margin: 0 0 16px 0;
+                font-size: 15px;
+                line-height: 1.7;
+              "
+            >
+              If this template has helped you stay organized and boost your
+              productivity, we'd be incredibly grateful if you could leave a
+              review on Notion Marketplace. Your feedback helps others discover
+              tools that can transform their lives!
+            </p>
+
+            <div class="instruction-box">
+              <p
+                style="
+                  color: #3d3933;
+                  margin: 0 0 12px 0;
+                  font-weight: 600;
+                  font-size: 15px;
+                "
+              >
+                📝 How to leave a review:
+              </p>
+              <div class="instruction-step">
+                1. Go to Notion and click <strong>Templates</strong> in your
+                sidebar
+              </div>
+              <div class="instruction-step">
+                2. Select <strong>Added</strong> or
+                <strong>Purchased</strong> at the top of the page
+              </div>
+              <div class="instruction-step">
+                3. Find the Automated Easy Peasy Debt Tracker template
+              </div>
+              <div class="instruction-step">
+                4. Click <strong>•••</strong> next to the template
+              </div>
+              <div class="instruction-step">
+                5. Select <strong>Leave a review</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="welcome-text" style="margin-top: 40px">
+          If you have any questions about the new features or need assistance,
+          we're always here to help. Simply reply to this email.
+        </p>
+
+        <p class="welcome-text">
+          Happy organizing!<br />
+          <strong>Life Organizer Guru</strong>
+        </p>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <div class="footer-title">Life Organizer Guru</div>
+        <div class="footer-tagline">
+          Transform your life through intentional organization
+        </div>
+        <div class="social-links">
+          <a
+            href="https://www.linkedin.com/company/life-organizer-guru"
+            target="_blank"
+            >LinkedIn</a
+          >
+          <a href="https://instagram.com/lifeorganizerguru" target="_blank"
+            >Instagram</a
+          >
+          <a href="https://medium.com/@life-organizer-guru" target="_blank"
+            >Medium</a
+          >
+        </div>
+        <div class="footer-links">
+          <a href="https://lifeorganizerguru.com">Visit Website</a>
+          <a href="https://www.notion.com/@lifeorganizerguru"
+            >Notion Templates</a
+          >
+          <a href="https://lifeorganizerguru.com/services">Services</a>
+          <a href="https://lifeorganizerguru.com/contact">Contact</a>
+        </div>
+        <div class="unsubscribe">
+          You're receiving this email because you purchased a template from Life
+          Organizer Guru.<br />
+          <a
+            href="https://lifeorganizerguru.com/unsubscribe?email={{recipientEmail}}"
+            >Unsubscribe from updates</a
+          >
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

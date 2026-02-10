@@ -163,11 +163,9 @@ function getWelcomeEmailHtml(
             <div class="footer-title">Life Organizer Guru</div>
             <div class="footer-tagline">Transform your life through intentional organization</div>
             <div class="social-links">
-                <a href="https://linkedin.com">LinkedIn</a>
-                <a href="https://twitter.com">Twitter</a>
-                <a href="https://threads.net">Threads</a>
-                <a href="https://instagram.com">Instagram</a>
-                <a href="https://medium.com">Medium</a>
+                <a href="https://www.linkedin.com/company/life-organizer-guru">LinkedIn</a>
+                <a href="https://instagram.com/lifeorganizerguru">Instagram</a>
+                <a href="https://medium.com/@life-organizer-guru">Medium</a>
             </div>
             <div class="footer-links">
                 <a href="${baseUrl}">Visit Website</a>
