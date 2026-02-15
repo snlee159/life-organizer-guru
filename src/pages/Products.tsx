@@ -31,6 +31,15 @@ export default function Products() {
           platform: "Amazon",
           image: "/images/default-to-less.png",
         },
+        {
+          title: "Choosing Consciously",
+          description:
+            "A practical philosophy for making difficult decisions by understanding and accepting the tradeoffs they require.",
+          price: "Starting at $7.99",
+          url: "https://www.amazon.com/dp/B0GNBYTVQQ",
+          platform: "Amazon",
+          image: "/images/choosing-consciously.png",
+        },
       ],
     },
     {
@@ -53,6 +62,15 @@ export default function Products() {
           url: "https://www.etsy.com/listing/4455909723/daily-focus-planner-notepad-minimalist",
           platform: "Etsy",
           image: "/images/daily-focus-planner-notepad.png",
+        },
+        {
+          title: "Habit Tracker Pro for Notion",
+          description:
+            "Track your daily, weekly, and monthly habits with ease with this fully automated habit tracker template for Notion.",
+          price: "$8.00",
+          url: "https://www.notion.com/templates/habit-tracker-pro-smart-cadence-system?indexHtmlPath=index-web-en-US-089ead1660b49128",
+          platform: "Notion",
+          image: "/images/habit-tracker-pro-template.png",
         },
         {
           title: "Reading List Template for Notion",
