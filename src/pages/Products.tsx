@@ -67,7 +67,7 @@ export default function Products() {
           title: "Habit Tracker Pro for Notion",
           description:
             "Track your daily, weekly, and monthly habits with ease with this fully automated habit tracker template for Notion.",
-          price: "$8.00",
+          price: "$4.99",
           url: "https://www.notion.com/templates/habit-tracker-pro-smart-cadence-system?indexHtmlPath=index-web-en-US-089ead1660b49128",
           platform: "Notion",
           image: "/images/habit-tracker-pro-template.png",
@@ -82,10 +82,19 @@ export default function Products() {
           image: "/images/reading-list-template.png",
         },
         {
+          title: "Savings & Financial Goal Tracker Pro",
+          description:
+            "Includes quick weekly/monthly review checklists so you stay consistent without spreadsheets.",
+          price: "$4.99",
+          url: "https://www.notion.com/templates/savings-financial-goal-tracker?indexHtmlPath=index-web-en-US-bce390604212e499",
+          platform: "Notion",
+          image: "/images/savings-financial-goal-tracker-template.png",
+        },
+        {
           title: "Easy Peasy Debt Tracker Template for Notion",
           description:
             "A template for Notion to help you track your debt and progress.",
-          price: "$5.00",
+          price: "$4.99",
           url: "https://www.notion.so/marketplace/templates/easy-peasy-debt-tracker",
           platform: "Notion",
           image: "/images/debt-tracker-template.png",
