@@ -117,14 +117,17 @@
       .cta-button {
         display: inline-block;
         padding: 14px 28px;
-        background: rgba(61, 57, 51, 0.95);
-        backdrop-filter: blur(10px);
-        color: #ffffff;
-        text-decoration: none;
+        background: #3d3933;
+        color: #ffffff !important;
+        text-decoration: none !important;
         border-radius: 8px;
         font-weight: 600;
         font-size: 15px;
         margin: 16px 8px 0 8px;
+      }
+      .cta-button:hover {
+        background: #2d2a26;
+        color: #ffffff !important;
       }
       .button-container {
         text-align: center;
@@ -134,39 +137,24 @@
         margin: 32px 0;
         text-align: center;
       }
-      .video-link {
-        display: inline-block;
-        position: relative;
-        width: 100%;
-        max-width: 540px;
-      }
       .video-thumbnail {
         width: 100%;
+        max-width: 540px;
         height: auto;
         border-radius: 10px;
         display: block;
       }
-      .play-button {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 68px;
-        height: 48px;
-        background: rgba(255, 0, 0, 0.9);
-        border-radius: 14px;
-      }
-      .play-button:after {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-35%, -50%);
-        width: 0;
-        height: 0;
-        border-left: 20px solid white;
-        border-top: 12px solid transparent;
-        border-bottom: 12px solid transparent;
+      /* Gmail-friendly play button: real image or table cell with styled link (no CSS-only overlay) */
+      .video-play-btn {
+        display: inline-block;
+        background: #cc0000;
+        color: #ffffff !important;
+        text-decoration: none !important;
+        padding: 14px 28px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 15px;
+        margin-top: 12px;
       }
       .video-label {
         font-size: 14px;
@@ -221,12 +209,10 @@
         margin-bottom: 24px;
         font-weight: 300;
       }
+      /* Gmail ignores flexbox – use text-align for centering, separators in HTML for spacing */
       .social-links {
-        display: flex;
-        justify-content: center;
-        gap: 24px;
+        text-align: center;
         margin: 24px 0;
-        flex-wrap: wrap;
       }
       .social-links a {
         color: rgba(245, 243, 240, 0.9);
@@ -235,11 +221,8 @@
         font-weight: 500;
       }
       .footer-links {
-        display: flex;
-        justify-content: center;
-        gap: 20px;
+        text-align: center;
         margin: 20px 0;
-        flex-wrap: wrap;
       }
       .footer-links a {
         color: #f1c178;
@@ -253,6 +236,7 @@
         font-size: 12px;
         color: rgba(245, 243, 240, 0.6);
         line-height: 1.6;
+        text-align: center;
       }
       .unsubscribe a {
         color: rgba(245, 243, 240, 0.7);
@@ -290,9 +274,6 @@
         }
         .footer {
           padding: 32px 24px;
-        }
-        .social-links {
-          gap: 16px;
         }
         .cta-button {
           display: block;
@@ -393,7 +374,8 @@
             <a
               href="https://lifeorganizerguru.com/sprints-template"
               class="cta-button"
-              >📥 Download Latest Version</a
+              style="color: #ffffff; text-decoration: none;"
+              >Download Latest Version</a
             >
           </div>
         </div>
@@ -408,17 +390,25 @@
           <div class="video-container">
             <a
               href="https://youtu.be/u1JX1OcdNj0"
-              class="video-link"
               target="_blank"
-              style="text-decoration: none"
+              style="text-decoration: none;"
             >
               <img
                 src="https://img.youtube.com/vi/u1JX1OcdNj0/maxresdefault.jpg"
-                alt="Tutorial Video"
+                alt="Tutorial Video – Click to watch"
                 class="video-thumbnail"
+                width="540"
+                height="303"
+                style="max-width: 100%; height: auto; border-radius: 10px; display: block; margin: 0 auto;"
               />
-              <div class="play-button"></div>
             </a>
+            <a
+              href="https://youtu.be/u1JX1OcdNj0"
+              target="_blank"
+              class="video-play-btn"
+              style="color: #ffffff; text-decoration: none; background: #cc0000; padding: 14px 28px; border-radius: 8px; font-weight: 600; font-size: 15px; display: inline-block; margin-top: 12px;"
+              >&#9654; Watch video</a
+            >
             <p class="video-label">Step-by-step guide to the new features</p>
           </div>
         </div>
@@ -514,21 +504,18 @@
             href="https://www.linkedin.com/company/life-organizer-guru"
             target="_blank"
             >LinkedIn</a
-          >
-          <a href="https://instagram.com/lifeorganizerguru" target="_blank"
+          >&nbsp;&nbsp;·&nbsp;&nbsp;<a href="https://instagram.com/lifeorganizerguru" target="_blank"
             >Instagram</a
-          >
-          <a href="https://medium.com/@life-organizer-guru" target="_blank"
+          >&nbsp;&nbsp;·&nbsp;&nbsp;<a href="https://medium.com/@life-organizer-guru" target="_blank"
             >Medium</a
           >
         </div>
         <div class="footer-links">
-          <a href="https://lifeorganizerguru.com">Visit Website</a>
-          <a href="https://lifeorganizerguru.com/notion"
+          <a href="https://lifeorganizerguru.com">Visit Website</a
+          >&nbsp;&nbsp;·&nbsp;&nbsp;<a href="https://lifeorganizerguru.com/notion"
             >Notion Templates</a
-          >
-          <a href="https://lifeorganizerguru.com/services">Services</a>
-          <a href="https://lifeorganizerguru.com/contact">Contact</a>
+          >&nbsp;&nbsp;·&nbsp;&nbsp;<a href="https://lifeorganizerguru.com/services">Services</a
+          >&nbsp;&nbsp;·&nbsp;&nbsp;<a href="https://lifeorganizerguru.com/contact">Contact</a>
         </div>
         <div class="unsubscribe">
           You're receiving this email because you purchased a template from Life
