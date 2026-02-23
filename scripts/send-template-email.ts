@@ -12,7 +12,8 @@
 // Configuration
 const RESEND_API_KEY = "re_3McmgkHb_4svDwcooCCm49guE9YfRh44G";
 const FROM_EMAIL = "Life Organizer Guru <newsletter@lifeorganizerguru.com>";
-const SUBJECT = "🎉 Your Template Just Got Better - Download the Latest Updates!";
+const SUBJECT =
+  "🎉 Your Template Just Got Better - Download the Latest Updates!";
 const TEMPLATE_PATH = "../email-templates/template-update-announcement.html";
 
 // Rate limiting: delay between emails (in ms)
@@ -23,15 +24,37 @@ const DELAY_BETWEEN_EMAILS = 600; // 600ms delay = ~1.6 emails per second
 // Helper function to delay
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
+/** Convert HTML to plain text for multipart email (strip tags, normalize whitespace). */
+function htmlToText(html: string): string {
+  let text = html
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
+    .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, "")
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/<\/p>/gi, "\n")
+    .replace(/<\/div>/gi, "\n")
+    .replace(/<\/li>/gi, "\n")
+    .replace(/<[^>]+>/g, "")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;/gi, "'")
+    .replace(/\n\s*\n\s*\n/g, "\n\n")
+    .replace(/[ \t]+/g, " ")
+    .trim();
+  return text;
+}
+
 // Parse email file
 async function parseEmailFile(filepath: string): Promise<string[]> {
   try {
     const content = await Deno.readTextFile(filepath);
-    
+
     const emails = content
       .split("\n")
-      .map(line => line.trim())
-      .filter(line => {
+      .map((line) => line.trim())
+      .filter((line) => {
         // Skip empty lines and comments
         if (!line || line.startsWith("#")) return false;
         // Basic email validation
@@ -51,12 +74,12 @@ async function getEmailHtml(recipientEmail: string): Promise<string> {
     // Get the directory of the current script
     const scriptDir = new URL(".", import.meta.url).pathname;
     const templatePath = scriptDir + TEMPLATE_PATH;
-    
+
     let html = await Deno.readTextFile(templatePath);
-    
+
     // Replace {{EMAIL}} placeholder with actual recipient email for unsubscribe link
     html = html.replace(/\{\{EMAIL\}\}/g, recipientEmail);
-    
+
     return html;
   } catch (error) {
     console.error(`❌ Error reading template: ${error.message}`);
@@ -69,6 +92,7 @@ async function sendEmail(
   email: string,
   subject: string,
   html: string,
+  text: string,
   retryCount = 0,
 ): Promise<{ success: boolean; email: string; error?: string }> {
   try {
@@ -81,22 +105,28 @@ async function sendEmail(
       body: JSON.stringify({
         from: FROM_EMAIL,
         to: email,
+        reply_to: "Life Organizer Guru <newsletter@lifeorganizerguru.com>",
         subject: subject,
         html: html,
+        text: text,
+        headers: {
+          "List-Unsubscribe": `<https://lifeorganizerguru.com/unsubscribe?email=${encodeURIComponent(email)}>`,
+          "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+        },
       }),
     });
 
     if (!response.ok) {
       const errorText = await response.text();
-      
+
       // Check if it's a rate limit error (429)
       if (response.status === 429 && retryCount < 3) {
         const waitTime = (retryCount + 1) * 1000; // 1s, 2s, 3s
         console.log(`⏳ Rate limited. Waiting ${waitTime}ms before retry...`);
         await delay(waitTime);
-        return sendEmail(email, subject, html, retryCount + 1);
+        return sendEmail(email, subject, html, text, retryCount + 1);
       }
-      
+
       console.error(`❌ Failed to send to ${email}:`, errorText);
       return { success: false, email, error: errorText };
     }
@@ -118,8 +148,12 @@ async function main() {
   const filepath = Deno.args[0];
   if (!filepath) {
     console.error("❌ ERROR: No email file specified!");
-    console.error("\nUsage: deno run --allow-env --allow-net --allow-read send-template-email.ts <email-file>");
-    console.error("\nExample: deno run --allow-env --allow-net --allow-read send-template-email.ts emails.txt");
+    console.error(
+      "\nUsage: deno run --allow-env --allow-net --allow-read send-template-email.ts <email-file>",
+    );
+    console.error(
+      "\nExample: deno run --allow-env --allow-net --allow-read send-template-email.ts emails.txt",
+    );
     Deno.exit(1);
   }
 
@@ -159,7 +193,7 @@ async function main() {
 
   // Show recipients preview
   console.log("📋 Preview of recipients:");
-  RECIPIENT_EMAILS.slice(0, 5).forEach(email => console.log(`  - ${email}`));
+  RECIPIENT_EMAILS.slice(0, 5).forEach((email) => console.log(`  - ${email}`));
   if (RECIPIENT_EMAILS.length > 5) {
     console.log(`  ... and ${RECIPIENT_EMAILS.length - 5} more`);
   }
@@ -193,10 +227,11 @@ async function main() {
   for (let i = 0; i < RECIPIENT_EMAILS.length; i++) {
     const email = RECIPIENT_EMAILS[i];
     console.log(`[${i + 1}/${RECIPIENT_EMAILS.length}] Sending to ${email}...`);
-    
+
     // Get HTML with personalized content
     const html = await getEmailHtml(email);
-    const result = await sendEmail(email, SUBJECT, html);
+    const text = htmlToText(html);
+    const result = await sendEmail(email, SUBJECT, html, text);
 
     if (result.success) {
       results.sent++;
