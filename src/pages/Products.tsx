@@ -64,46 +64,48 @@ export default function Products() {
           image: "/images/daily-focus-planner-notepad.png",
         },
         {
-          title: "Habit Tracker Pro for Notion",
+          title: "Habit Tracker Pro: Stop Missing Habits Template for Notion",
           description:
-            "Track your daily, weekly, and monthly habits with ease with this fully automated habit tracker template for Notion.",
+            "Finally stick to habits without streak pressure or daily planning. Add a habit once — the system only shows what’s due today. Handles daily, weekly, and custom routines automatically so you stop restarting and just keep going.",
           price: "$4.99",
           url: "https://www.notion.com/templates/habit-tracker-pro-smart-cadence-system?indexHtmlPath=index-web-en-US-089ead1660b49128",
           platform: "Notion",
           image: "/images/habit-tracker-pro-template.png",
         },
         {
-          title: "Reading List Template for Notion",
+          title:
+            "Virtual Bookcase - The Reading Memory System Template for Notion",
           description:
-            "A template for Notion to help you track your reading list and progress.",
+            "Stop forgetting what you read. Save books, notes, and takeaways in one place and always know what to read next. Track progress and yearly stats without maintaining a complicated system.",
           price: "Free for a limited time",
           url: "https://www.notion.so/marketplace/templates/virtual-bookcase-smart-reading-list",
           platform: "Notion",
           image: "/images/reading-list-template.png",
         },
         {
-          title: "Savings & Financial Goal Tracker Pro",
+          title:
+            "Savings Goal Tracker w/ Monthly Savings Calculator Template for Notion",
           description:
-            "Includes quick weekly/monthly review checklists so you stay consistent without spreadsheets.",
+            "Financial & Savings Goals Pro (with automations): set 1–3 goals, log contributions in seconds, and let the dashboard calculate progress + monthly amounts needed automatically. Includes quick weekly/monthly review checklists so you stay consistent without spreadsheets.",
           price: "$4.99",
           url: "https://www.notion.com/templates/savings-financial-goal-tracker?indexHtmlPath=index-web-en-US-bce390604212e499",
           platform: "Notion",
           image: "/images/savings-financial-goal-tracker-template.png",
         },
         {
-          title: "Easy Peasy Debt Tracker Template for Notion",
+          title: "Easy Peasy Debt Freedom Template for Notion",
           description:
-            "A template for Notion to help you track your debt and progress.",
+            "See exactly when your debt ends. Enter balances and payments once, and the tracker shows payoff date, progress, and interest automatically — no spreadsheets or guessing.",
           price: "$4.99",
           url: "https://www.notion.so/marketplace/templates/easy-peasy-debt-tracker",
           platform: "Notion",
           image: "/images/debt-tracker-template.png",
         },
         {
-          title: "Task & Sprint Tracking Template for Notion",
+          title: "2-Week Focus Sprints Template for Notion",
           description:
-            "A template for Notion to help you track your tasks and sprints.",
-          price: "Free for a limited time",
+            "Organize work into focused 2-week sprints so your backlog stops competing for attention. Automatic current-sprint views, clear priorities, and built-in workflow help you finish more without endless reshuffling. Includes starter tasks to begin immediately.",
+          price: "$4.99",
           url: "https://www.notion.so/marketplace/templates/task-sprint-tracking",
           platform: "Notion",
           image: "/images/task-sprint-template.png",
