@@ -2,6 +2,7 @@
   "rewrites": [{"source": "/(.*)", "destination": "/index.html"}],
   "redirects": [
     {"source": "/sprints-template", "destination": "https://lumpy-volleyball-8a2.notion.site/FREE-for-Loyalty-Members-2-Week-Focus-Sprints-3104ae958f60805c854fcd273237d23f?source=copy_link", "permanent": false},
+    {"source": "/savings-template", "destination": "https://www.notion.so/FREE-for-Loyalty-Members-Financial-Savings-Goals-Pro-with-Automations-30c4ae958f60808d9231fcf396053529", "permanent": false},
     {"source": "/notion", "destination": "https://www.notion.com/@lifeorganizerguru", "permanent": false}
   ]
 }
